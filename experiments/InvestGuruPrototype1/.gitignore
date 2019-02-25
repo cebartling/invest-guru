@@ -18,6 +18,7 @@ var/
 
 # Serverless directories
 .serverless
+node_modules/
 
 # JetBrains tools
 .idea/

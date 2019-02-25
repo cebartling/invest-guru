@@ -17,6 +17,9 @@ service: InvestGuruPrototype1
 # Check out our docs for more details
 frameworkVersion: "=1.38.0"
 
+plugins:
+  - serverless-offline
+
 provider:
   name: aws
   runtime: python3.7
