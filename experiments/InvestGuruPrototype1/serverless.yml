@@ -19,6 +19,8 @@ frameworkVersion: "=1.38.0"
 
 plugins:
   - serverless-offline
+  - serverless-appsync-plugin
+  - serverless-dynamodb-local
 
 provider:
   name: aws
@@ -106,3 +108,217 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+
+custom:
+  appSync:
+    name: InvestGuruPrototype1API
+#    authenticationType: AMAZON_COGNITO_USER_POOLS
+#    mappingTemplates:
+#      - dataSource: myDynamoDB | myElasticSearch | myLambda
+#        type: # GraphQL Type
+#        field: # Schema Field
+#        request: # Request Mapping Template
+#        response: # Response Mapping Template
+#    schema: schema.graphql
+#    dataSources:
+#      - type: AMAZON_DYNAMODB | AMAZON_ELASTICSEARCH | AWS_LAMBDA
+#        name: myDynamoDB | myElasticSearch | myLambda
+#        config:
+#          tableName | endpoint | lambdaFunctionArn
+#          serviceRoleArn: IAM ROLE
+
+
+#custom:
+#  accountId: 1234xxxxxxxx # replace this with your accountId
+#  dynamodb:
+#    start:
+#      port: 8000
+#      inMemory: true
+#      migrate: true
+#      seed: true
+#    seed:
+#      test:
+#        sources:
+#          - table: Users
+#            sources: [seed-data/Users.json]
+#          - table: Tweets
+#            sources: [seed-data/Tweets.json]
+#  appSync:
+#    # name:  # defaults to api
+#    # apiId # only required for update-appsync
+#    authenticationType: AMAZON_COGNITO_USER_POOLS # API_KEY is also supported
+#    userPoolConfig:
+#      awsRegion: us-east-1 # required # region
+#      defaultAction: ALLOW
+#      userPoolId: us-east-1_xxxxxxxxx # replace this with your Cognito User Pool Id
+#    # region: # defaults to provider region
+#    # mappingTemplatesLocation: # defaults to mapping-templates
+#    mappingTemplates:
+#      - dataSource: Users
+#        type: Query
+#        field: getUserInfo
+#        request: "getUserInfo-request-mapping-template.txt"
+#        response: "getUserInfo-response-mapping-template.txt"
+#      - dataSource: Users
+#        type: Query
+#        field: meInfo
+#        request: "meInfo-request-mapping-template.txt"
+#        response: "meInfo-response-mapping-template.txt"
+#      - dataSource: Tweets
+#        type: User
+#        field: topTweet
+#        request: "topTweet-request-mapping-template.txt"
+#        response: "topTweet-response-mapping-template.txt"
+#      - dataSource: Tweets
+#        type: User
+#        field: tweets
+#        request: "tweets-request-mapping-template.txt"
+#        response: "tweets-response-mapping-template.txt"
+#      - dataSource: Tweets
+#        type: Mutation
+#        field: createTweet
+#        request: "createTweet-request-mapping-template.txt"
+#        response: "createTweet-response-mapping-template.txt"
+#      - dataSource: Tweets
+#        type: Mutation
+#        field: deleteTweet
+#        request: "deleteTweet-request-mapping-template.txt"
+#        response: "deleteTweet-response-mapping-template.txt"
+#      - dataSource: Tweets
+#        type: Mutation
+#        field: reTweet
+#        request: "reTweet-request-mapping-template.txt"
+#        response: "reTweet-response-mapping-template.txt"
+#      - dataSource: Tweets
+#        type: Mutation
+#        field: updateTweet
+#        request: "updateTweet-request-mapping-template.txt"
+#        response: "updateTweet-response-mapping-template.txt"
+#      - dataSource: Users
+#        type: Mutation
+#        field: updateUserInfo
+#        request: "updateUserInfo-request-mapping-template.txt"
+#        response: "updateUserInfo-response-mapping-template.txt"
+#    # schema: # defaults schema.graphql
+#    serviceRole: "AppSyncServiceRole"
+#    dataSources:
+#      - type: AMAZON_DYNAMODB
+#        name: Users
+#        description: 'Users table'
+#        config:
+#          tableName: 'Users'
+#          serviceRoleArn: "arn:aws:iam::${self:custom.accountId}:role/Dynamo-${self:custom.appSync.serviceRole}"
+#      - type: AMAZON_DYNAMODB
+#        name: Tweets
+#        description: 'Tweets table'
+#        config:
+#          tableName: 'Tweets'
+#          serviceRoleArn: "arn:aws:iam::${self:custom.accountId}:role/Dynamo-${self:custom.appSync.serviceRole}"
+#
+#resources:
+#  Resources:
+#    UserTable:
+#      Type: "AWS::DynamoDB::Table"
+#      Properties:
+#        KeySchema:
+#          -
+#            AttributeName: handle
+#            KeyType: HASH
+#        AttributeDefinitions:
+#          -
+#            AttributeName: handle
+#            AttributeType: S
+#        ProvisionedThroughput:
+#          ReadCapacityUnits: 10
+#          WriteCapacityUnits: 10
+#        TableName: "Users"
+#    TweetsTable:
+#      Type: "AWS::DynamoDB::Table"
+#      Properties:
+#        KeySchema:
+#          -
+#            AttributeName: tweet_id
+#            KeyType: HASH
+#        AttributeDefinitions:
+#          -
+#            AttributeName: tweet_id
+#            AttributeType: S
+#          -
+#            AttributeName: handle
+#            AttributeType: S
+#          -
+#            AttributeName: retweet_count
+#            AttributeType: N
+#          -
+#            AttributeName: created_at
+#            AttributeType: S
+#        ProvisionedThroughput:
+#          ReadCapacityUnits: 10
+#          WriteCapacityUnits: 10
+#        TableName: "Tweets"
+#        GlobalSecondaryIndexes:
+#          -
+#            IndexName: top-index
+#            KeySchema:
+#              -
+#                AttributeName: handle
+#                KeyType: HASH
+#              -
+#                AttributeName: retweet_count
+#                KeyType: RANGE
+#            Projection:
+#              ProjectionType: ALL
+#            ProvisionedThroughput:
+#              ReadCapacityUnits: 50
+#              WriteCapacityUnits: 50
+#          -
+#            IndexName: tweet-index
+#            KeySchema:
+#              -
+#                AttributeName: handle
+#                KeyType: HASH
+#              -
+#                AttributeName: created_at
+#                KeyType: RANGE
+#            Projection:
+#              ProjectionType: ALL
+#            ProvisionedThroughput:
+#              ReadCapacityUnits: 50
+#              WriteCapacityUnits: 50
+#    AppSyncServiceRole:
+#      Type: "AWS::IAM::Role"
+#      Properties:
+#        RoleName: "Dynamo-AppSyncServiceRole"
+#        AssumeRolePolicyDocument:
+#          Version: "2012-10-17"
+#          Statement:
+#            -
+#              Effect: "Allow"
+#              Principal:
+#                Service:
+#                  - "appsync.amazonaws.com"
+#              Action:
+#                - "sts:AssumeRole"
+#        Policies:
+#          -
+#            PolicyName: "Dynamo-AppSyncServiceRole-Policy"
+#            PolicyDocument:
+#              Version: "2012-10-17"
+#              Statement:
+#                -
+#                  Effect: "Allow"
+#                  Action:
+#                    - "dynamodb:Query"
+#                    - "dynamodb:BatchWriteItem"
+#                    - "dynamodb:GetItem"
+#                    - "dynamodb:DeleteItem"
+#                    - "dynamodb:PutItem"
+#                    - "dynamodb:Scan"
+#                    - "dynamodb:UpdateItem"
+#                  Resource:
+#                    - "arn:aws:dynamodb:us-east-1:*:table/Users"
+#                    - "arn:aws:dynamodb:us-east-1:*:table/Users/*"
+#                    - "arn:aws:dynamodb:us-east-1:*:table/Tweets"
+#                    - "arn:aws:dynamodb:us-east-1:*:table/Tweets/*"
+#

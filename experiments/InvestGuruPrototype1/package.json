@@ -1,5 +1,5 @@
 {
-  "name": "InvestGuruPrototype1",
+  "name": "invest-guru-prototype-1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless-offline": "^4.6.0"
-  }
+    "serverless-appsync-plugin": "1.0.9",
+    "serverless-dynamodb-local": "0.2.36",
+    "serverless-offline": "4.7.0"
+  },
+  "dependencies": {}
 }
