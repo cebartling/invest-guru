@@ -111,9 +111,9 @@ functions:
 #       Value: "Some output value"
 
 
-#custom:
-#  appSync:
-#    name: InvestGuruPrototype1API
+custom:
+  appSync:
+    name: InvestGuruPrototype1API
 #    authenticationType: AMAZON_COGNITO_USER_POOLS
 #    mappingTemplates:
 #      - dataSource: myDynamoDB | myElasticSearch | myLambda

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "./node_modules/.bin/serverless deploy -v --aws-profile InvestGuruAdmin --stage dev"
   },
   "keywords": [],
   "author": "",
@@ -12,10 +12,11 @@
   "devDependencies": {
     "serverless-appsync-plugin": "1.0.9",
     "serverless-dynamodb-local": "0.2.36",
-    "serverless-offline": "4.7.0"
+    "serverless-offline": "4.7.0",
+    "serverless": "1.38.0",
+    "serverless-dynamodb-client": "0.0.2",
+    "serverless-finch": "2.3.2"
   },
   "dependencies": {
-    "serverless-dynamodb-client": "^0.0.2",
-    "serverless-finch": "^2.3.2"
   }
 }
