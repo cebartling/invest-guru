@@ -46,8 +46,8 @@ provider:
 #            - "/*"
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+environment:
+  apiName: "InvestGuruPrototype1API"
 
 # you can add packaging information here
 #package:
