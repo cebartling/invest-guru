@@ -14,5 +14,8 @@
     "serverless-dynamodb-local": "0.2.36",
     "serverless-offline": "4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "serverless-dynamodb-client": "^0.0.2",
+    "serverless-finch": "^2.3.2"
+  }
 }
