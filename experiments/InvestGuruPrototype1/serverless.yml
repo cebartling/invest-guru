@@ -238,7 +238,7 @@ resources:
           }
 
     AppSyncNotesTableDataSource:
-      Type: "AWS::AppSync::DataSource"
+      Type: AWS::AppSync::DataSource
       Properties:
         ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
         Name: ${self:custom.name}_notes_table
@@ -249,15 +249,15 @@ resources:
           TableName: { Ref: DynamoDBNotesTable }
           AwsRegion: "us-east-1"
 
-#    AppSyncHelloWorldLambdaDataSource:
-#      Type: AWS::AppSync::DataSource
-#      Properties:
-#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-#        Name: ${self:custom.name}-${self:provider.stage}-hello_datasource
-#        Type: AWS_LAMBDA
-#        LambdaConfig:
-#          LambdaFunctionArn: { Fn::GetAtt: [ Lambda, Arn ] }
-#          ServiceRoleArn: { Fn::GetAtt: [ Role, Arn ] }
+    AppSyncHelloWorldLambdaDataSource:
+      Type: AWS::AppSync::DataSource
+      Properties:
+        Type: AWS_LAMBDA
+        Name: ${self:custom.name}_${self:provider.stage}_hello_lambda_datasource
+        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        ServiceRoleArn: { Fn::GetAtt: [ LambdaRole, Arn ] }
+        LambdaConfig:
+          LambdaFunctionArn: { Fn::GetAtt: [ HelloLambdaFunction, Arn ] }
 
 #    AppSyncResolver:
 #      Type: AWS::AppSync::Resolver
