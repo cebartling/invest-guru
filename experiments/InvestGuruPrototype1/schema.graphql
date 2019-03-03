@@ -1,25 +1,31 @@
+type HelloWorldResult {
+    content: String!
+}
+
 type Note {
-  NoteId: ID!
-  title: String
-  content: String
+    NoteId: ID!
+    title: String
+    content: String
 }
 
 type PaginatedNotes {
-  notes: [Note!]!
-  nextToken: String
+    notes: [Note!]!
+    nextToken: String
 }
 
 type Query {
-  allNotes(limit: Int, nextToken: String): PaginatedNotes!
-  getNote(NoteId: ID!): Note
+    helloWorld(name: String!): HelloWorldResult!
+    allNotes(limit: Int, nextToken: String): PaginatedNotes!
+    getNote(NoteId: ID!): Note
 }
 
 type Mutation {
-  saveNote(NoteId: ID!, title: String!, content: String!): Note
-  deleteNote(NoteId: ID!): Note
+    saveNote(NoteId: ID!, title: String!, content: String!): Note
+    deleteNote(NoteId: ID!): Note
 }
 
 type Schema {
-  query: Query
-  mutation: Mutation
+    query: Query
+    mutation: Mutation
 }
+
