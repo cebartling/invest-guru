@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "./node_modules/.bin/serverless deploy -v --aws-profile InvestGuruAdmin --stage dev"
+    "deploy": "./node_modules/.bin/serverless deploy -v --stage dev"
   },
   "keywords": [],
   "author": "",
