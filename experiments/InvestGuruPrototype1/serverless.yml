@@ -214,6 +214,9 @@ resources:
       Properties:
         ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
         Definition: |
+          type HelloWorldResult {
+            content: String!
+          }
           type Note {
             NoteId: ID!
             title: String
@@ -224,7 +227,7 @@ resources:
             nextToken: String
           }
           type Query {
-            helloWorld(name: String!): String!
+            helloWorld(name: String!): HelloWorldResult!
             allNotes(limit: Int, nextToken: String): PaginatedNotes!
             getNote(NoteId: ID!): Note
           }
@@ -259,6 +262,22 @@ resources:
         LambdaConfig:
           LambdaFunctionArn: { Fn::GetAtt: [ HelloLambdaFunction, Arn ] }
 
+    AppSyncHelloWorldQueryResolver:
+      Type: AWS::AppSync::Resolver
+      DependsOn: AppSyncSchema
+      Properties:
+        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        TypeName: Query
+        FieldName: helloWorld
+        DataSourceName: { Fn::GetAtt: [ AppSyncHelloWorldLambdaDataSource, Name ] }
+        RequestMappingTemplate: |
+          {
+            "version": "2017-02-28",
+            "operation": "Invoke",
+            "payload": $utils.toJson($context.arguments)
+          }
+        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+
 #    AppSyncResolver:
 #      Type: AWS::AppSync::Resolver
 #      Properties:
@@ -269,21 +288,6 @@ resources:
 #        RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke", "payload": $util.toJson($context.arguments) }'
 #        ResponseMappingTemplate: '$util.toJson($context.result)'
 
-#    AppSyncHelloWorldQueryResolver:
-#      Type: "AWS::AppSync::Resolver"
-#      DependsOn: AppSyncSchema
-#      Properties:
-#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-#        TypeName: Query
-#        FieldName: helloWorld
-#        DataSourceName: { Fn::GetAtt: [ AppSyncHelloWorldLambdaDataSource, Name ] }
-#        RequestMappingTemplate: |
-#          {
-#            "version": "2017-02-28",
-#            "operation": "Invoke",
-#            "payload": $utils.toJson($context.arguments)
-#          }
-#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
 
 #    AppSyncAllNotesQueryResolver:
 #      Type: "AWS::AppSync::Resolver"
