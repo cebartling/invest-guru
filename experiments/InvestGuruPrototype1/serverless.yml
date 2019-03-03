@@ -29,25 +29,8 @@ provider:
   stage: dev
   region: us-east-1
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
-
-# you can define service wide environment variables here
-environment:
-  apiName: "InvestGuruPrototype1API"
+custom:
+  name: "InvestGuruPrototype1API"
 
 # you can add packaging information here
 #package:
@@ -66,39 +49,6 @@ functions:
           path: /hello
           method: get
 
-
-
-
-
-
-#      - websocket: $connect
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
-
-# you can add CloudFormation resource templates here
 resources:
   Resources:
     CognitoSNSPolicy:
@@ -118,7 +68,7 @@ resources:
       Type: AWS::IAM::Role
       Description: "An IAM Role to allow Cognito to send SNS messages"
       Properties:
-        RoleName: InvestGuruPrototype1API-cognito-sns-role
+        RoleName: ${self:custom.name}-cognito-sns-role
         ManagedPolicyArns:
           - Ref: CognitoSNSPolicy
         AssumeRolePolicyDocument:
@@ -137,12 +87,12 @@ resources:
       Type: "AWS::Cognito::UserPool"
       Description: "A Cognito user pool for authenticating users"
       Properties:
-        UserPoolName: InvestGuruPrototype1API-user-pool
+        UserPoolName: ${self:custom.name}-user-pool
         AutoVerifiedAttributes:
           - phone_number
         MfaConfiguration: "ON"
         SmsConfiguration:
-          ExternalId: InvestGuruPrototype1API-external
+          ExternalId: ${self:custom.name}-external
           SnsCallerArn: { Fn::GetAtt: [SNSRole, Arn] }
         Schema:
           - Name: name
@@ -162,7 +112,7 @@ resources:
       Type: "AWS::Cognito::UserPoolClient"
       Description: "App Client used by AWS AppSync"
       Properties:
-        ClientName: InvestGuruPrototype1API-appsync-client
+        ClientName: ${self:custom.name}-appsync-client
         GenerateSecret: false
         UserPoolId: { Ref: UserPool }
 
@@ -170,7 +120,7 @@ resources:
       Type: "AWS::DynamoDB::Table"
       Description: "Data store for AWS AppSync Notes Type"
       Properties:
-        TableName: InvestGuruPrototype1API-notes-table
+        TableName: ${self:custom.name}-notes-table
         AttributeDefinitions:
           - AttributeName: "NoteId"
             AttributeType: "S"
@@ -188,7 +138,7 @@ resources:
     DynamoDBRole:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: InvestGuruPrototype1API-appsync-dynamodb-role
+        RoleName: ${self:custom.name}-appsync-dynamodb-role
         ManagedPolicyArns:
           - Ref: AppSyncDynamoDBPolicy
         AssumeRolePolicyDocument:
@@ -228,7 +178,7 @@ resources:
       Description: "The GraphQL API for the Notes App"
       Properties:
         AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
-        Name: InvestGuruPrototype1API
+        Name: ${self:custom.name}
         UserPoolConfig:
           UserPoolId: { Ref: UserPoolClient }
           AwsRegion: "us-east-1"
@@ -265,7 +215,7 @@ resources:
       Type: "AWS::AppSync::DataSource"
       Properties:
         ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-        Name: InvestGuruPrototype1API_notes_table
+        Name: ${self:custom.name}_notes_table
         Description: "The Notes Table AppSync Data Source"
         Type: AMAZON_DYNAMODB
         ServiceRoleArn: { Fn::GetAtt: [ DynamoDBRole, Arn ] }
