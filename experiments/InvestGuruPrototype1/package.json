@@ -11,13 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless-appsync-plugin": "1.0.9",
-    "serverless-dynamodb-local": "0.2.36",
-    "serverless-offline": "4.7.0",
     "serverless": "1.38.0",
+    "serverless-appsync-plugin": "1.1.0",
     "serverless-dynamodb-client": "0.0.2",
-    "serverless-finch": "2.3.2"
+    "serverless-dynamodb-local": "0.2.36",
+    "serverless-finch": "2.3.2",
+    "serverless-offline": "4.7.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
