@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "./node_modules/.bin/serverless deploy -v --stage dev",
+    "deploy": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless deploy -v --stage dev",
     "undeploy": "./node_modules/.bin/serverless remove -v --stage dev"
   },
   "keywords": [],

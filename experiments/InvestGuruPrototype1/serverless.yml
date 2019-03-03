@@ -134,120 +134,120 @@ resources:
 #        GenerateSecret: false
 #        UserPoolId: { Ref: UserPool }
 
-#    DynamoDBNotesTable:
-#      Type: "AWS::DynamoDB::Table"
-#      Description: "Data store for AWS AppSync Notes Type"
-#      Properties:
-#        TableName: ${self:custom.name}-notes-table
-#        AttributeDefinitions:
-#          - AttributeName: "NoteId"
-#            AttributeType: "S"
-#          - AttributeName: "UserId"
-#            AttributeType: "S"
-#        KeySchema:
-#          - AttributeName: "NoteId"
-#            KeyType: "HASH"
-#          - AttributeName: "UserId"
-#            KeyType: "RANGE"
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 5
-#          WriteCapacityUnits: 5
-#
-#    DynamoDBRole:
-#      Type: AWS::IAM::Role
-#      Properties:
-#        RoleName: ${self:custom.name}-appsync-dynamodb-role
-#        ManagedPolicyArns:
-#          - Ref: AppSyncDynamoDBPolicy
-#        AssumeRolePolicyDocument:
-#          Version: "2012-10-17"
-#          Statement:
-#            - Effect: Allow
-#              Action:
-#                - sts:AssumeRole
-#              Principal:
-#                Service:
-#                  - appsync.amazonaws.com
-#      DependsOn:
-#        - AppSyncDynamoDBPolicy
-#
-#    AppSyncDynamoDBPolicy:
-#      Type: AWS::IAM::ManagedPolicy
-#      Properties:
-#        Description: Managed policy to allow AWS AppSync to access the tables created by this template.
-#        Path: /appsync/
-#        PolicyDocument:
-#          Version: "2012-10-17"
-#          Statement:
-#            - Effect: Allow
-#              Action:
-#                - dynamodb:GetItem
-#                - dynamodb:PutItem
-#                - dynamodb:DeleteItem
-#                - dynamodb:UpdateItem
-#                - dynamodb:Query
-#                - dynamodb:Scan
-#                - dynamodb:BatchGetItem
-#                - dynamodb:BatchWriteItem
-#              Resource: { Fn::Join: [ '', [ { Fn::GetAtt: [ DynamoDBNotesTable, Arn ] }, '*' ] ] }
-#
-#    AppSyncApi:
-#      Type: "AWS::AppSync::GraphQLApi"
-#      Description: "The Invest Guru GraphQL API"
-#      Properties:
-##        AuthenticationType: "API_KEY"
+    DynamoDBNotesTable:
+      Type: "AWS::DynamoDB::Table"
+      Description: "Data store for AWS AppSync Notes Type"
+      Properties:
+        TableName: ${self:custom.name}-notes-table
+        AttributeDefinitions:
+          - AttributeName: "NoteId"
+            AttributeType: "S"
+          - AttributeName: "UserId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "NoteId"
+            KeyType: "HASH"
+          - AttributeName: "UserId"
+            KeyType: "RANGE"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    DynamoDBRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.name}-appsync-dynamodb-role
+        ManagedPolicyArns:
+          - Ref: AppSyncDynamoDBPolicy
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - sts:AssumeRole
+              Principal:
+                Service:
+                  - appsync.amazonaws.com
+      DependsOn:
+        - AppSyncDynamoDBPolicy
+
+    AppSyncDynamoDBPolicy:
+      Type: AWS::IAM::ManagedPolicy
+      Properties:
+        Description: Managed policy to allow AWS AppSync to access the tables created by this template.
+        Path: /appsync/
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:DeleteItem
+                - dynamodb:UpdateItem
+                - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:BatchGetItem
+                - dynamodb:BatchWriteItem
+              Resource: { Fn::Join: [ '', [ { Fn::GetAtt: [ DynamoDBNotesTable, Arn ] }, '*' ] ] }
+
+    AppSyncApi:
+      Type: "AWS::AppSync::GraphQLApi"
+      Description: "The Invest Guru GraphQL API"
+      Properties:
+        AuthenticationType: "API_KEY"
+        Name: ${self:custom.name}
 #        AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
-#        Name: ${self:custom.name}
 #        UserPoolConfig:
 #          UserPoolId: { Ref: UserPoolClient }
 #          AwsRegion: "us-east-1"
 #          DefaultAction: "ALLOW"
 
-#    AppSyncAPIKey:
-#      Type: "AWS::AppSync::ApiKey"
-#      Properties:
-#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-#        Expires: { Ref: ParamKeyExpiration }
+    AppSyncAPIKey:
+      Type: "AWS::AppSync::ApiKey"
+      Properties:
+        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        Expires: ${env:API_KEY_EXPIRATION}
 
-#    AppSyncSchema:
-#      Type: "AWS::AppSync::GraphQLSchema"
-#      Properties:
-#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-#        Definition: |
-#          type Note {
-#            NoteId: ID!
-#            title: String
-#            content: String
-#          }
-#          type PaginatedNotes {
-#            notes: [Note!]!
-#            nextToken: String
-#          }
-#          type Query {
-#            helloWorld(name: String!): String!
-#            allNotes(limit: Int, nextToken: String): PaginatedNotes!
-#            getNote(NoteId: ID!): Note
-#          }
-#          type Mutation {
-#            saveNote(NoteId: ID!, title: String!, content: String!): Note
-#            deleteNote(NoteId: ID!): Note
-#          }
-#          type Schema {
-#            query: Query
-#            mutation: Mutation
-#          }
-#
-#    AppSyncNotesTableDataSource:
-#      Type: "AWS::AppSync::DataSource"
-#      Properties:
-#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-#        Name: ${self:custom.name}_notes_table
-#        Description: "The Notes Table AppSync Data Source"
-#        Type: AMAZON_DYNAMODB
-#        ServiceRoleArn: { Fn::GetAtt: [ DynamoDBRole, Arn ] }
-#        DynamoDBConfig:
-#          TableName: { Ref: DynamoDBNotesTable }
-#          AwsRegion: "us-east-1"
+    AppSyncSchema:
+      Type: "AWS::AppSync::GraphQLSchema"
+      Properties:
+        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        Definition: |
+          type Note {
+            NoteId: ID!
+            title: String
+            content: String
+          }
+          type PaginatedNotes {
+            notes: [Note!]!
+            nextToken: String
+          }
+          type Query {
+            helloWorld(name: String!): String!
+            allNotes(limit: Int, nextToken: String): PaginatedNotes!
+            getNote(NoteId: ID!): Note
+          }
+          type Mutation {
+            saveNote(NoteId: ID!, title: String!, content: String!): Note
+            deleteNote(NoteId: ID!): Note
+          }
+          type Schema {
+            query: Query
+            mutation: Mutation
+          }
+
+    AppSyncNotesTableDataSource:
+      Type: "AWS::AppSync::DataSource"
+      Properties:
+        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        Name: ${self:custom.name}_notes_table
+        Description: "The Notes Table AppSync Data Source"
+        Type: AMAZON_DYNAMODB
+        ServiceRoleArn: { Fn::GetAtt: [ DynamoDBRole, Arn ] }
+        DynamoDBConfig:
+          TableName: { Ref: DynamoDBNotesTable }
+          AwsRegion: "us-east-1"
 
 #    AppSyncHelloWorldLambdaDataSource:
 #      Type: AWS::AppSync::DataSource
@@ -373,19 +373,19 @@ resources:
 #          }
 #        ResponseMappingTemplate: "$util.toJson($ctx.result)"
 
-#  Outputs:
+  Outputs:
 #    CognitoUserPoolId:
 #      Description: The Pool ID of the Cognito User Pool
 #      Value: { Ref: UserPool }
 #    CognitoUserPoolClientId:
 #      Description: The Client ID for AWS AppSync Auth
 #      Value: { Ref: UserPoolClient }
-#    DynamoDBNotesTableName:
-#      Description: The name of the DynamoDB Table
-#      Value: { Ref: DynamoDBNotesTable }
-#    GraphQLApiEndpoint:
-#      Description: The URL to the GraphQL Endpoint
-#      Value: { Fn::GetAtt: [ AppSyncApi, GraphQLUrl ] }
-#    GraphQLApiId:
-#      Description: The API ID of the GraphQL API
-#      Value: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+    DynamoDBNotesTableName:
+      Description: The name of the DynamoDB Table
+      Value: { Ref: DynamoDBNotesTable }
+    GraphQLApiEndpoint:
+      Description: The URL to the GraphQL Endpoint
+      Value: { Fn::GetAtt: [ AppSyncApi, GraphQLUrl ] }
+    GraphQLApiId:
+      Description: The API ID of the GraphQL API
+      Value: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
