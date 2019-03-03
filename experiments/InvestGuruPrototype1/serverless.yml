@@ -1,16 +1,3 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: InvestGuruPrototype1
 
 # You can pin your service to only deploy with a specific Serverless version
@@ -83,6 +70,29 @@ resources:
                   - cognito-idp.amazonaws.com
       DependsOn:
         - CognitoSNSPolicy
+
+#    LambdaRole:
+#      Type: AWS::IAM::Role
+#      Properties:
+#        AssumeRolePolicyDocument:
+#          Version: "2012-10-17"
+#          Statement:
+#            - Effect: Allow
+#              Principal:
+#                Service: appsync.amazonaws.com
+#              Action:
+#                - sts:AssumeRole
+#        Policies:
+#          - PolicyName: allow-access-to-lambda-from-appsync
+#            PolicyDocument:
+#              Version: "2012-10-17"
+#              Statement:
+#                - Effect: Allow
+#                  Action: lambda:invokeFunction
+#                  Resource:
+#                    - { Fn::GetAtt: [ Lambda, Arn ] }
+#                    - { Fn::Join: [ '', [ { Fn::GetAtt: [ Lambda, Arn ] }, '*' ] ] }
+
 
     UserPool:
       Type: "AWS::Cognito::UserPool"
@@ -176,14 +186,21 @@ resources:
 
     AppSyncApi:
       Type: "AWS::AppSync::GraphQLApi"
-      Description: "The GraphQL API for the Notes App"
+      Description: "The Invest Guru GraphQL API"
       Properties:
+#        AuthenticationType: "API_KEY"
         AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
         Name: ${self:custom.name}
         UserPoolConfig:
           UserPoolId: { Ref: UserPoolClient }
           AwsRegion: "us-east-1"
           DefaultAction: "ALLOW"
+
+#    AppSyncAPIKey:
+#      Type: "AWS::AppSync::ApiKey"
+#      Properties:
+#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+#        Expires: { Ref: ParamKeyExpiration }
 
     AppSyncSchema:
       Type: "AWS::AppSync::GraphQLSchema"
@@ -200,6 +217,7 @@ resources:
             nextToken: String
           }
           type Query {
+            helloWorld(name: String!): String!
             allNotes(limit: Int, nextToken: String): PaginatedNotes!
             getNote(NoteId: ID!): Note
           }
@@ -224,6 +242,129 @@ resources:
           TableName: { Ref: DynamoDBNotesTable }
           AwsRegion: "us-east-1"
 
+#    AppSyncHelloWorldLambdaDataSource:
+#      Type: AWS::AppSync::DataSource
+#      Properties:
+#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+#        Name: ${self:custom.name}-${self:provider.stage}-hello_datasource
+#        Type: AWS_LAMBDA
+#        LambdaConfig:
+#          LambdaFunctionArn: { Fn::GetAtt: [ Lambda, Arn ] }
+#          ServiceRoleArn: { Fn::GetAtt: [ Role, Arn ] }
+
+#    AppSyncResolver:
+#      Type: AWS::AppSync::Resolver
+#      Properties:
+#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+#        TypeName: Query
+#        FieldName: feed
+#        DataSourceName: !GetAtt [ AppSyncDataSource, Name ]
+#        RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke", "payload": $util.toJson($context.arguments) }'
+#        ResponseMappingTemplate: '$util.toJson($context.result)'
+
+#    AppSyncHelloWorldQueryResolver:
+#      Type: "AWS::AppSync::Resolver"
+#      DependsOn: AppSyncSchema
+#      Properties:
+#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+#        TypeName: Query
+#        FieldName: helloWorld
+#        DataSourceName: { Fn::GetAtt: [ AppSyncHelloWorldLambdaDataSource, Name ] }
+#        RequestMappingTemplate: |
+#          {
+#            "version": "2017-02-28",
+#            "operation": "Invoke",
+#            "payload": $utils.toJson($context.arguments)
+#          }
+#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+
+#    AppSyncAllNotesQueryResolver:
+#      Type: "AWS::AppSync::Resolver"
+#      DependsOn: AppSyncSchema
+#      Properties:
+#        ApiId: !GetAtt AppSyncApi.ApiId
+#        TypeName: Query
+#        FieldName: allNotes
+#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
+#        RequestMappingTemplate: |
+#          {
+#            "version": "2017-02-28",
+#            "operation": "Query",
+#            "query": {
+#              "expression": "UserId = :id",
+#              "expressionValues": {
+#                ":id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+#              }
+#            }
+#          },
+#          "limit": $util.defaultIfNull(${ctx.args.limit}, 20),
+#          "nextToken": $util.toJson(${ctx.args.nextToken})
+#        ResponseMappingTemplate: |
+#          {
+#            "notes": $util.toJson($ctx.result.items),
+#            "nextToken": $util.toJson(${ctx.args.nextToken})
+#          }
+#
+#    AppSyncGetNoteQueryResolver:
+#      Type: "AWS::AppSync::Resolver"
+#      DependsOn: AppSyncSchema
+#      Properties:
+#        ApiId: !GetAtt AppSyncApi.ApiId
+#        TypeName: Query
+#        FieldName: getNote
+#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
+#        RequestMappingTemplate: |
+#          {
+#            "version": "2012-02-28",
+#            "operation": "GetItem",
+#            "key": {
+#              "NoteId": $util.dynamodb.toDynamoDBJson($ctx.args.NoteId),
+#              "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+#            }
+#          }
+#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+#
+#    AppSyncSaveNoteMutationResolver:
+#      Type: "AWS::AppSync::Resolver"
+#      DependsOn: AppSyncSchema
+#      Properties:
+#        ApiId: !GetAtt AppSyncApi.ApiId
+#        TypeName: Mutation
+#        FieldName: saveNote
+#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
+#        RequestMappingTemplate: |
+#          {
+#            "version": "2012-02-28",
+#            "operation": "PutItem",
+#            "key": {
+#              "NoteId": $util.dynamodb.toDynamoDBJson($ctx.args.NoteId),
+#              "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+#            },
+#            "attributeValues": {
+#              "title": $util.dynamodb.toDynamoDBJson($ctx.args.title),
+#              "content": $util.dynamodb.toDynamoDBJson($ctx.args.content)
+#            }
+#          }
+#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+#
+#    AppSyncDeleteNoteMutationResolver:
+#      Type: "AWS::AppSync::Resolver"
+#      DependsOn: AppSyncSchema
+#      Properties:
+#        ApiId: !GetAtt AppSyncApi.ApiId
+#        TypeName: Mutation
+#        FieldName: deleteNote
+#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
+#        RequestMappingTemplate: |
+#          {
+#            "version": "2012-02-28",
+#            "operation": "DeleteItem",
+#            "key": {
+#              "NoteId": $util.dynamodb.toDynamoDBJson($ctx.args.NoteId),
+#              "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+#            }
+#          }
+#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
 
   Outputs:
     CognitoUserPoolId:
@@ -241,5 +382,3 @@ resources:
     GraphQLApiId:
       Description: The API ID of the GraphQL API
       Value: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-
-
