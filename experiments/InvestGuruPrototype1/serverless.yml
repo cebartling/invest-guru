@@ -20,14 +20,13 @@ provider:
 custom:
   name: "InvestGuruPrototype1API"
 
-# you can add packaging information here
-#package:
+package:
 #  include:
 #    - include-me.py
 #    - include-me-dir/**
-#  exclude:
+  exclude:
 #    - exclude-me.py
-#    - exclude-me-dir/**
+    - blog_posts/**
 
 functions:
   hello:
