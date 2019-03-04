@@ -1,7 +1,7 @@
 # GraphQL APIs with AWS AppSync, Lambda and DynamoDB: Part one
 
 This blog post is the first of a series of posts describing my experimentation with AWS AppSync, Lambda, and 
-DynamoDB. I really wanted to experiment with AWS AppSync and really dig into it's support for Lambda-based 
+DynamoDB. I really wanted to experiment with AWS AppSync and really dig into its support for Lambda-based 
 resolvers. I also  wanted to ensure that everything I did was through an Infrastructure as Code (IaC) approach, 
 so I utilized the [Serverless Framework](https://serverless.com/) for creating all of my resources on AWS. 
 
@@ -14,7 +14,7 @@ so others can learn from my efforts.
 
 ## The technology stack
 
-- Python 3.7
+- Python 3.7 as the AWS Lambda runtime
 - Serverless Framework
 - AWS AppSync for the hosted GraphQL engine
 - AWS DynamoDB for the data store
@@ -39,5 +39,6 @@ I used the Serverless Framework to scaffold out the AWS Lambda project, but the 
 do a lot more than just help facilitate the configuration and deployment of Lambda functions. One can
 include CloudFormation configuration that the Serverless Framework will use to create associated AWS
 resources.
+
 
 ### CloudFormation YAML
