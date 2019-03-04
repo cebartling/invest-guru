@@ -78,7 +78,7 @@ resources:
               Action:
                 - sts:AssumeRole
         Policies:
-          - PolicyName: allow-access-to-lambda-from-appsync
+          - PolicyName: appsync-lambda-access
             PolicyDocument:
               Version: "2012-10-17"
               Statement:

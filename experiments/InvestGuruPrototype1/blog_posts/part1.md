@@ -14,7 +14,7 @@ so others can learn from my efforts.
 
 ## The technology stack
 
-- Python 3.7 as the AWS Lambda runtime
+- Python 3.7 for the AWS Lambda runtime
 - Serverless Framework
 - AWS AppSync for the hosted GraphQL engine
 - AWS DynamoDB for the data store
@@ -42,3 +42,7 @@ resources.
 
 
 ### CloudFormation YAML
+ 
+AWS CloudFormation supports 
+[both JSON and YAML formats](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-formats.html). 
+I chose YAML as it works well with the Serverless Framework's YAML configuration file, `serverless.yml`.
