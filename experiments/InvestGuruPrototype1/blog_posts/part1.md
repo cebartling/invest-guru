@@ -7,7 +7,11 @@ so I utilized the [Serverless Framework](https://serverless.com/) for creating a
 
 A [public GitHub repository](https://github.com/cebartling/invest-guru) exists with 
 [this experiment](https://github.com/cebartling/invest-guru/tree/master/experiments/InvestGuruPrototype1) 
-so others can learn from my efforts.
+so others can learn from my efforts. Links to the other posts in this series are listed below:
+
+- Part one (this article)
+- [Part two]() 
+
 
 ## Introduction
 
@@ -40,9 +44,30 @@ do a lot more than just help facilitate the configuration and deployment of Lamb
 include CloudFormation configuration that the Serverless Framework will use to create associated AWS
 resources.
 
+### `serverless.yml`
 
-### CloudFormation YAML
+The centerpiece of a Serverless Framework-managed application is the `serverless.yml` file. Its declarations 
+specify everything about the project: cloud provider, plugins, runtime and deployment configuration to name
+just a few. A full listing of the options available through the `aws` provider within the `serverless.yml`
+file can be found [here](https://serverless.com/framework/docs/providers/aws/guide/serverless.yml/). The 
+user guide for the `aws` provider can be found [here](https://serverless.com/framework/docs/providers/aws/guide/intro/).  
+
+
+### Using CloudFormation YAML
  
 AWS CloudFormation supports 
 [both JSON and YAML formats](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-formats.html). 
 I chose YAML as it works well with the Serverless Framework's YAML configuration file, `serverless.yml`.
+
+#### CloudFormation intrinsic functions
+
+You will see a fair amount of usage of intrinsic functions (e.g. `Fn::GetAtt:`, `!GetAtt`) in my CloudFormation YAML. A 
+full description of these functions can be found [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html).
+A little odd to work with at first, once you get the hang of them, they aren't too bad.
+
+#### Serverless variables
+
+I also use some Serverless Framework variables in the `serverless.yml` file. A full description of those can be
+found [here](https://serverless.com/framework/docs/providers/aws/guide/variables/). Again, super helpful for making
+the configuration modular. I especially like having the GraphQL schema in its own file (`schema.graphql`) and 
+being able to edit it with syntax highlighting.

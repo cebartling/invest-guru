@@ -85,15 +85,15 @@ resources:
                 - Effect: Allow
                   Action: lambda:invokeFunction
                   Resource:
-                    - { Fn::GetAtt: [ HelloLambdaFunction, Arn ] }
-                    - { Fn::Join: [ '', [ { Fn::GetAtt: [ HelloLambdaFunction, Arn ] }, '*' ] ] }
+                    - !GetAtt HelloLambdaFunction.Arn
+                    - !Join [ "", [ !GetAtt HelloLambdaFunction.Arn, "*" ] ]
 
     LoggingLambdaPermission:
       Type: AWS::Lambda::Permission
       Properties:
-        FunctionName: { Fn::GetAtt: [ HelloLambdaFunction, Arn ] }
+        FunctionName: !GetAtt HelloLambdaFunction.Arn
         Action: lambda:InvokeFunction
-        Principal: { Fn::Join: ["", ["logs.", { Ref: AWS::Region}, ".amazonaws.com" ] ] }
+        Principal: !Join ["", ["logs.", !Ref AWS::Region, ".amazonaws.com" ] ]
 
 
 #    UserPool:
@@ -184,7 +184,7 @@ resources:
                 - dynamodb:Scan
                 - dynamodb:BatchGetItem
                 - dynamodb:BatchWriteItem
-              Resource: { Fn::Join: [ '', [ { Fn::GetAtt: [ DynamoDBNotesTable, Arn ] }, '*' ] ] }
+              Resource: !Join [ '', [!GetAtt DynamoDBNotesTable.Arn, '*' ] ]
 
     AppSyncApi:
       Type: AWS::AppSync::GraphQLApi
@@ -201,25 +201,25 @@ resources:
     AppSyncAPIKey:
       Type: AWS::AppSync::ApiKey
       Properties:
-        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        ApiId: !GetAtt AppSyncApi.ApiId
         Expires: ${env:API_KEY_EXPIRATION}
 
     AppSyncSchema:
       Type: AWS::AppSync::GraphQLSchema
       Properties:
-        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        ApiId: !GetAtt AppSyncApi.ApiId
         Definition: ${file(./schema.graphql)}
 
     AppSyncNotesTableDataSource:
       Type: AWS::AppSync::DataSource
       Properties:
-        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        ApiId: !GetAtt AppSyncApi.ApiId
         Name: ${self:custom.name}_notes_table
         Description: "The Notes Table AppSync Data Source"
         Type: AMAZON_DYNAMODB
-        ServiceRoleArn: { Fn::GetAtt: [ DynamoDBRole, Arn ] }
+        ServiceRoleArn: !GetAtt DynamoDBRole.Arn
         DynamoDBConfig:
-          TableName: { Ref: DynamoDBNotesTable }
+          TableName: !Ref DynamoDBNotesTable
           AwsRegion: "us-east-1"
 
     AppSyncHelloWorldLambdaDataSource:
@@ -227,19 +227,19 @@ resources:
       Properties:
         Type: AWS_LAMBDA
         Name: ${self:custom.name}_${self:provider.stage}_hello_lambda_datasource
-        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
-        ServiceRoleArn: { Fn::GetAtt: [ LambdaRole, Arn ] }
+        ApiId: !GetAtt AppSyncApi.ApiId
+        ServiceRoleArn: !GetAtt LambdaRole.Arn
         LambdaConfig:
-          LambdaFunctionArn: { Fn::GetAtt: [ HelloLambdaFunction, Arn ] }
+          LambdaFunctionArn: !GetAtt HelloLambdaFunction.Arn
 
     AppSyncHelloWorldQueryResolver:
       Type: AWS::AppSync::Resolver
       DependsOn: AppSyncSchema
       Properties:
-        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+        ApiId: !GetAtt AppSyncApi.ApiId
         TypeName: Query
         FieldName: helloWorld
-        DataSourceName: { Fn::GetAtt: [ AppSyncHelloWorldLambdaDataSource, Name ] }
+        DataSourceName: !GetAtt AppSyncHelloWorldLambdaDataSource.Name
         RequestMappingTemplate: |
           {
             "version": "2017-02-28",
@@ -251,7 +251,7 @@ resources:
 #    AppSyncResolver:
 #      Type: AWS::AppSync::Resolver
 #      Properties:
-#        ApiId: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+#        ApiId: !GetAtt AppSyncApi.ApiId
 #        TypeName: Query
 #        FieldName: feed
 #        DataSourceName: !GetAtt [ AppSyncDataSource, Name ]
@@ -356,10 +356,10 @@ resources:
 #      Value: { Ref: UserPoolClient }
     DynamoDBNotesTableName:
       Description: The name of the DynamoDB Table
-      Value: { Ref: DynamoDBNotesTable }
+      Value: !Ref DynamoDBNotesTable
     GraphQLApiEndpoint:
       Description: The URL to the GraphQL Endpoint
-      Value: { Fn::GetAtt: [ AppSyncApi, GraphQLUrl ] }
+      Value: !GetAtt AppSyncApi.GraphQLUrl
     GraphQLApiId:
       Description: The API ID of the GraphQL API
-      Value: { Fn::GetAtt: [ AppSyncApi, ApiId ] }
+      Value: !GetAtt AppSyncApi.ApiId
