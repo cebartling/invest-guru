@@ -41,10 +41,10 @@ associated _Access Key ID_ and _Secret Access Key_.
 
 I used the Serverless Framework to scaffold out the AWS Lambda project, but the Serverless Framework can 
 do a lot more than just help facilitate the configuration and deployment of Lambda functions. One can
-include CloudFormation configuration that the Serverless Framework will use to create associated AWS
+include CloudFormation configuration that the Serverless Framework will use to create the associated AWS
 resources.
 
-### `serverless.yml`
+### The Serverless Framework's configuration file
 
 The centerpiece of a Serverless Framework-managed application is the `serverless.yml` file. Its declarations 
 specify everything about the project: cloud provider, plugins, runtime and deployment configuration to name
@@ -57,13 +57,14 @@ user guide for the `aws` provider can be found [here](https://serverless.com/fra
  
 AWS CloudFormation supports 
 [both JSON and YAML formats](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-formats.html). 
-I chose YAML as it works well with the Serverless Framework's YAML configuration file, `serverless.yml`.
+I chose YAML as it works well with the Serverless Framework's own `serverless.yml` configuration file.
 
 #### CloudFormation intrinsic functions
 
-You will see a fair amount of usage of intrinsic functions (e.g. `Fn::GetAtt:`, `!GetAtt`) in my CloudFormation YAML. A 
+You will see a fair amount of intrinsic functions usage (e.g. `Fn::GetAtt:`, `!GetAtt`) in my CloudFormation YAML. A 
 full description of these functions can be found [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html).
-A little odd to work with at first, once you get the hang of them, they aren't too bad.
+A little odd to work with at first, but once you get the hang of them, they aren't too bad. I use the _short form_
+syntax in my `serverless.yml` file.
 
 #### Serverless variables
 
