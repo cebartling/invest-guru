@@ -16,6 +16,8 @@ provider:
   stage: dev
   region: us-east-1
   profile: InvestGuruAdmin
+  environment:
+    alphaVantageApiKey: ${file(./.alphavantage)}
 
 custom:
   name: "InvestGuruPrototype1API"
@@ -31,6 +33,7 @@ package:
 functions:
   hello:
     handler: invest_guru.handlers.hello_handler.hello
+
 
 resources:
   Resources:

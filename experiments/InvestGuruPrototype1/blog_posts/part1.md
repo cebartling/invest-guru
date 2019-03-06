@@ -15,6 +15,21 @@ so others can learn from my efforts. Links to the other posts in this series are
 
 ## Introduction
 
+The problem domain for this experimentation is an algorithmic trading system. Our first analytic will be a Simple
+Moving Average or SMA.
+
+From [Moving Average Trading Strategies](https://www.quantinsti.com/blog/moving-average-trading-strategies):
+
+> A simple (or arithmetic) moving average is an arithmetic moving average calculated by adding the elements 
+in a time series and dividing this total by the number of time periods. As the name suggests, 
+the simple moving average is the simplest type of moving average. It is arguably the most popular 
+technical analysis tool used by traders. All elements in the SMA have the same weightage. 
+If the moving average period is 5, then each element in the SMA will have a 20% (1/5) weightage in the 
+SMA. The SMA is usually used to identify trend direction, but it can also be used to generate potential 
+trading signals. The formula for calculating the SMA is straightforward:
+>
+> SMA = (Sum of data points in the moving average period)/(Total number of periods)
+
 
 ## The technology stack
 

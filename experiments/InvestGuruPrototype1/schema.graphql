@@ -2,6 +2,15 @@ type HelloWorldResult {
     content: String!
 }
 
+type Company {
+    name: String!
+    symbol: String!
+}
+
+type SimpleMovingAverageAnalytic {
+    company: Company!
+}
+
 type Note {
     NoteId: ID!
     title: String

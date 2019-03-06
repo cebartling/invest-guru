@@ -1,7 +1,11 @@
 # InvestGuru Prototype 1
 
-Demonstration of using AWS Lambda, AppSync, and DynamoDB for an investing solution. Using the 
-Serverless Framework here to provision the solution in AWS.
+Demonstration of using AWS Lambda, AppSync, and DynamoDB for an algorithmic trading system demonstration. 
+
+ 
+
+Using the Serverless Framework here to provision the solution in AWS.
+
 
 ## Tools needed
 
