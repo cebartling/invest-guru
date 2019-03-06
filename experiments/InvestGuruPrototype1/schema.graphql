@@ -24,6 +24,7 @@ type PaginatedNotes {
 
 type Query {
     helloWorld(name: String!): HelloWorldResult!
+    simpleMovingAverageAnalytic(symbol: String!): SimpleMovingAverageAnalytic!
     allNotes(limit: Int, nextToken: String): PaginatedNotes!
     getNote(NoteId: ID!): Note
 }

@@ -33,7 +33,8 @@ package:
 functions:
   hello:
     handler: invest_guru.handlers.hello_handler.hello
-
+  simpleMovingAverageAnalytic:
+    handler: invest_guru.handlers.simple_moving_average_analytic_handler.handle
 
 resources:
   Resources:
@@ -90,11 +91,25 @@ resources:
                   Resource:
                     - !GetAtt HelloLambdaFunction.Arn
                     - !Join [ "", [ !GetAtt HelloLambdaFunction.Arn, "*" ] ]
+                    - !GetAtt SimpleMovingAverageAnalyticLambdaFunction.Arn
+                    - !Join [ "", [ !GetAtt SimpleMovingAverageAnalyticLambdaFunction.Arn, "*" ] ]
 
-    LoggingLambdaPermission:
+
+####################################################################################################################
+## Lambda permissions
+####################################################################################################################
+
+    LoggingHelloLambdaPermission:
       Type: AWS::Lambda::Permission
       Properties:
         FunctionName: !GetAtt HelloLambdaFunction.Arn
+        Action: lambda:InvokeFunction
+        Principal: !Join ["", ["logs.", !Ref AWS::Region, ".amazonaws.com" ] ]
+
+    LoggingSimpleMovingAverageAnalyticLambdaPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !GetAtt SimpleMovingAverageAnalyticLambdaFunction.Arn
         Action: lambda:InvokeFunction
         Principal: !Join ["", ["logs.", !Ref AWS::Region, ".amazonaws.com" ] ]
 
@@ -225,6 +240,11 @@ resources:
           TableName: !Ref DynamoDBNotesTable
           AwsRegion: "us-east-1"
 
+
+####################################################################################################################
+## AppSync Lambda data sources
+####################################################################################################################
+
     AppSyncHelloWorldLambdaDataSource:
       Type: AWS::AppSync::DataSource
       Properties:
@@ -235,6 +255,21 @@ resources:
         LambdaConfig:
           LambdaFunctionArn: !GetAtt HelloLambdaFunction.Arn
 
+    AppSyncSimpleMovingAverageAnalyticLambdaDataSource:
+      Type: AWS::AppSync::DataSource
+      Properties:
+        Type: AWS_LAMBDA
+        Name: ${self:custom.name}_${self:provider.stage}_sma_analytic_lambda_datasource
+        ApiId: !GetAtt AppSyncApi.ApiId
+        ServiceRoleArn: !GetAtt LambdaRole.Arn
+        LambdaConfig:
+          LambdaFunctionArn: !GetAtt SimpleMovingAverageAnalyticLambdaFunction.Arn
+
+
+####################################################################################################################
+## AppSync Lambda query resolvers
+####################################################################################################################
+
     AppSyncHelloWorldQueryResolver:
       Type: AWS::AppSync::Resolver
       DependsOn: AppSyncSchema
@@ -243,6 +278,22 @@ resources:
         TypeName: Query
         FieldName: helloWorld
         DataSourceName: !GetAtt AppSyncHelloWorldLambdaDataSource.Name
+        RequestMappingTemplate: |
+          {
+            "version": "2017-02-28",
+            "operation": "Invoke",
+            "payload": $utils.toJson($context.arguments)
+          }
+        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+
+    AppSyncSimpleMovingAverageAnalyticQueryResolver:
+      Type: AWS::AppSync::Resolver
+      DependsOn: AppSyncSchema
+      Properties:
+        ApiId: !GetAtt AppSyncApi.ApiId
+        TypeName: Query
+        FieldName: simpleMovingAverageAnalytic
+        DataSourceName: !GetAtt AppSyncSimpleMovingAverageAnalyticLambdaDataSource.Name
         RequestMappingTemplate: |
           {
             "version": "2017-02-28",
