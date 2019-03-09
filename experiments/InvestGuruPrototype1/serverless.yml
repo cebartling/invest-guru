@@ -5,6 +5,7 @@ service: InvestGuruPrototype1
 frameworkVersion: ">=1.38.0"
 
 plugins:
+  - serverless-python-requirements
   - serverless-offline
   - serverless-dynamodb-local
 #  - serverless-appsync-plugin
@@ -21,6 +22,8 @@ provider:
 
 custom:
   name: "InvestGuruPrototype1API"
+  pythonRequirements:
+    dockerizePip: false
 
 package:
 #  include:
