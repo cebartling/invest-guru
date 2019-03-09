@@ -27,7 +27,6 @@ package:
 #    - include-me.py
 #    - include-me-dir/**
   exclude:
-    - blog_posts/**
     - tests/**
 
 functions:
