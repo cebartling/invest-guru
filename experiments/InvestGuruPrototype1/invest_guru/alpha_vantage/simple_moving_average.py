@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 
 import requests
@@ -25,14 +26,14 @@ def _prepare_api_url(symbol, time_period):
 
 def simple_moving_average(symbol, time_period=50):
     api_url = _prepare_api_url(symbol, time_period)
-    result = dict()
+    results = []
     response = requests.get(api_url)
     if response.status_code == requests.codes.ok:
         api_result = response.json()
         if TECHNICAL_ANALYSIS_SMA_KEY in api_result:
             sma_dict = api_result[TECHNICAL_ANALYSIS_SMA_KEY]
-            for key in sorted(sma_dict):
-                sma_value = sma_dict[key][SMA_KEY]
-                result[key] = sma_value
+            for date_key in sorted(sma_dict):
+                sma_value = sma_dict[date_key][SMA_KEY]
+                results.append({"date": date_key, "value": float(sma_value)})
 
-    return result
+    return results

@@ -27,6 +27,7 @@ package:
 #    - include-me.py
 #    - include-me-dir/**
   exclude:
+    - node_modules/**
     - invest_guru/**/*_test.py
 
 functions:

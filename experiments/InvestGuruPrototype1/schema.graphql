@@ -2,6 +2,11 @@ type HelloWorldResult {
     content: String!
 }
 
+type MovingAverageObservation {
+    date: String!
+    value: Float!
+}
+
 type Company {
     name: String!
     symbol: String!
@@ -9,6 +14,8 @@ type Company {
 
 type SimpleMovingAverageAnalytic {
     company: Company!
+    simpleMovingAverages50Days: [MovingAverageObservation]!
+    simpleMovingAverages300Days: [MovingAverageObservation]!
 }
 
 type Note {

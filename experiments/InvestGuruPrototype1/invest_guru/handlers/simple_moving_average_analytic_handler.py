@@ -12,10 +12,8 @@ def handle(event, context):
             "name": "Company name",
             "symbol": symbol
         },
-        "sma": {
-            "sma_50_days": sma_50_days,
-            "sma_300_days": sma_300_days
-        },
+        "simple_moving_averages_50_days": sma_50_days,
+        "simple_moving_averages_300_days": sma_300_days,
         "event": event
     }
     return result

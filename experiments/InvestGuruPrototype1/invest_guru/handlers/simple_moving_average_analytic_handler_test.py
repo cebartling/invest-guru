@@ -9,7 +9,6 @@ def test__handle__success_verify_result(mocker):
                  side_effect=[{"2019-03-09": "105.6878"}, {"2019-03-09": "106.1234"}])
 
     result = handle(event, None)
-    print(result)
 
     assert result is not None
     assert "company" in result
@@ -17,7 +16,18 @@ def test__handle__success_verify_result(mocker):
 
 def test__handle__success_verify_collaborators(mocker):
     sma_patch = mocker.patch('invest_guru.handlers.simple_moving_average_analytic_handler.simple_moving_average',
-                             side_effect=[{"2019-03-09": "105.6878"}, {"2019-03-09": "106.1234"}])
+                             side_effect=[
+                                 [
+                                     {"2019-03-09": "105.6878"},
+                                     {"2019-03-08": "105.3456"},
+                                     {"2019-03-07": "105.1122"},
+                                 ],
+                                 [
+                                     {"2019-03-09": "104.8885"},
+                                     {"2019-03-08": "104.6844"},
+                                     {"2019-03-07": "104.5561"},
+                                 ]
+                             ])
 
     handle(event, None)
 
