@@ -65,8 +65,11 @@ import requests
 #     }
 # }
 
+TECHNICAL_ANALYSIS_SMA_KEY = "Technical Analysis: SMA"
+SMA_KEY = 'SMA'
 
-def calculate_simple_moving_average(symbol, time_period=50):
+
+def simple_moving_average(symbol, time_period=50):
     function_param = "function=SMA"
     symbol_param = "symbol={}".format(symbol)
     interval_param = "interval=daily"
@@ -80,9 +83,15 @@ def calculate_simple_moving_average(symbol, time_period=50):
                                                                            time_period_param,
                                                                            series_type_param,
                                                                            api_key_param)
+    result = dict()
     response = requests.get(api_url)
     if response.status_code == requests.codes.ok:
         result = response.json()
-        if "Technical Analysis: SMA" in result:
-            sma_dict = result["Technical Analysis: SMA"]
+        if TECHNICAL_ANALYSIS_SMA_KEY in result:
+            sma_dict = result[TECHNICAL_ANALYSIS_SMA_KEY]
+            for key in sorted(sma_dict):
+                sma_value = sma_dict[key][SMA_KEY]
+                result[key] = sma_value
+
+    return result
 
