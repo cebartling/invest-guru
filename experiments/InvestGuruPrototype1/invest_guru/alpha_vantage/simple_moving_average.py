@@ -28,9 +28,9 @@ def simple_moving_average(symbol, time_period=50):
     result = dict()
     response = requests.get(api_url)
     if response.status_code == requests.codes.ok:
-        result = response.json()
-        if TECHNICAL_ANALYSIS_SMA_KEY in result:
-            sma_dict = result[TECHNICAL_ANALYSIS_SMA_KEY]
+        api_result = response.json()
+        if TECHNICAL_ANALYSIS_SMA_KEY in api_result:
+            sma_dict = api_result[TECHNICAL_ANALYSIS_SMA_KEY]
             for key in sorted(sma_dict):
                 sma_value = sma_dict[key][SMA_KEY]
                 result[key] = sma_value

@@ -27,7 +27,7 @@ package:
 #    - include-me.py
 #    - include-me-dir/**
   exclude:
-    - tests/**
+    - invest_guru/**/*_test.py
 
 functions:
   hello:
@@ -407,6 +407,9 @@ resources:
 #    CognitoUserPoolClientId:
 #      Description: The Client ID for AWS AppSync Auth
 #      Value: { Ref: UserPoolClient }
+    AppSyncAPIKey:
+      Description: The AppSync API Key used for authorizing users making GraphQL invocations.
+      Value: !GetAtt AppSyncAPIKey.ApiKey
     DynamoDBNotesTableName:
       Description: The name of the DynamoDB Table
       Value: !Ref DynamoDBNotesTable
