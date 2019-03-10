@@ -14,8 +14,8 @@ type Company {
 
 type SimpleMovingAverageAnalytic {
     company: Company!
-    simpleMovingAverages50Days: [MovingAverageObservation]!
-    simpleMovingAverages300Days: [MovingAverageObservation]!
+    averages50: [MovingAverageObservation!]!
+    averages300: [MovingAverageObservation!]!
 }
 
 type Note {

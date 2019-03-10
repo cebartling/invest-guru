@@ -1,4 +1,3 @@
-from datetime import datetime
 import os
 
 import requests
@@ -34,6 +33,10 @@ def simple_moving_average(symbol, time_period=50):
             sma_dict = api_result[TECHNICAL_ANALYSIS_SMA_KEY]
             for date_key in sorted(sma_dict):
                 sma_value = sma_dict[date_key][SMA_KEY]
-                results.append({"date": date_key, "value": float(sma_value)})
+                observation = {
+                    'date': date_key,
+                    'value': float(sma_value)
+                }
+                results.append(observation)
 
     return results

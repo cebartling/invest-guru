@@ -288,7 +288,7 @@ resources:
             "operation": "Invoke",
             "payload": $utils.toJson($context.arguments)
           }
-        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+        ResponseMappingTemplate: "$util.toJson($context.result)"
 
     AppSyncSimpleMovingAverageAnalyticQueryResolver:
       Type: AWS::AppSync::Resolver
@@ -304,7 +304,7 @@ resources:
             "operation": "Invoke",
             "payload": $utils.toJson($context.arguments)
           }
-        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+        ResponseMappingTemplate: "$util.toJson($context.result)"
 
 #    AppSyncResolver:
 #      Type: AWS::AppSync::Resolver
