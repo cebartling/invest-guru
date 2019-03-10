@@ -8,12 +8,23 @@
     "deploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless deploy -v --stage dev",
     "undeploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless remove -v --stage dev"
   },
-  "keywords": [],
+  "keywords": [
+    "serverless applications",
+    "lambda",
+    "dynamodb",
+    "dynamodb local",
+    "aws",
+    "aws lambda",
+    "aws appsync",
+    "aws dynamodb",
+    "amazon",
+    "amazon web services",
+    "serverless.com"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "serverless": "1.38.0",
-    "serverless-appsync-offline": "1.1.2",
     "serverless-appsync-plugin": "1.1.0",
     "serverless-dynamodb-client": "0.0.2",
     "serverless-dynamodb-local": "0.2.36",
