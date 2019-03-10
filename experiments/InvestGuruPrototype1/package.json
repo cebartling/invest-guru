@@ -1,23 +1,25 @@
 {
   "name": "invest-guru-prototype-1",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless deploy -v --stage dev",
-    "undeploy": "./node_modules/.bin/serverless remove -v --stage dev"
+    "offline": "./node_modules/.bin/serverless offline",
+    "deploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless deploy -v --stage dev",
+    "undeploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless remove -v --stage dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "serverless": "1.38.0",
+    "serverless-appsync-offline": "1.1.2",
     "serverless-appsync-plugin": "1.1.0",
     "serverless-dynamodb-client": "0.0.2",
     "serverless-dynamodb-local": "0.2.36",
     "serverless-finch": "2.3.2",
-    "serverless-offline": "4.7.1",
-    "serverless-python-requirements": "^4.3.0"
+    "serverless-offline": "4.8.1",
+    "serverless-python-requirements": "4.3.0"
   },
   "dependencies": {}
 }

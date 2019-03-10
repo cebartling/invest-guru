@@ -6,9 +6,10 @@ frameworkVersion: ">=1.38.0"
 
 plugins:
   - serverless-python-requirements
-  - serverless-offline
-  - serverless-dynamodb-local
+#  - serverless-dynamodb-local
 #  - serverless-appsync-plugin
+#  - serverless-appsync-offline
+#  - serverless-offline
 #  - serverless-finch
 
 provider:
