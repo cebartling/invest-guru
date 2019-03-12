@@ -6,13 +6,21 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "apollo": "vue-cli-service apollo:watch",
+    "apollo:run": "vue-cli-service apollo:run",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "aws-appsync": "^1.7.2",
+    "graphql-type-json": "^0.2.1",
     "highcharts": "7.0.3",
     "highcharts-vue": "1.2.0",
+    "lowdb": "^1.0.0",
+    "mkdirp": "^0.5.1",
+    "shortid": "^2.2.8",
     "vue": "2.6.8",
+    "vue-apollo": "^3.0.0-beta.11",
     "vue-router": "3.0.2",
     "vuex": "3.1.0"
   },
@@ -28,9 +36,12 @@
     "babel-eslint": "10.0.1",
     "babel-jest": "24.5.0",
     "eslint": "5.15.1",
+    "eslint-plugin-graphql": "^2.1.1",
     "eslint-plugin-vue": "5.2.2",
+    "graphql-tag": "^2.9.0",
     "node-sass": "4.11.0",
     "sass-loader": "7.1.0",
+    "vue-cli-plugin-apollo": "^0.19.1",
     "vue-template-compiler": "2.6.8"
   },
   "eslintConfig": {
@@ -42,10 +53,21 @@
       "plugin:vue/essential",
       "@vue/prettier"
     ],
-    "rules": {},
+    "rules": {
+      "graphql/template-strings": [
+        "error",
+        {
+          "env": "literal",
+          "projectName": "app"
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
-    }
+    },
+    "plugins": [
+      "graphql"
+    ]
   },
   "postcss": {
     "plugins": {
