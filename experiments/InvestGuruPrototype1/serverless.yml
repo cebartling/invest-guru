@@ -1,16 +1,11 @@
 service: InvestGuruPrototype1
 
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
 frameworkVersion: ">=1.38.0"
+
 
 plugins:
   - serverless-python-requirements
-#  - serverless-dynamodb-local
-#  - serverless-appsync-plugin
-#  - serverless-appsync-offline
-#  - serverless-offline
-#  - serverless-finch
+
 
 provider:
   name: aws
@@ -21,58 +16,30 @@ provider:
   environment:
     alphaVantageApiKey: ${file(./.alphavantage)}
 
+
 custom:
   name: "InvestGuruPrototype1API"
   pythonRequirements:
     dockerizePip: false
 
+
 package:
-#  include:
-#    - include-me.py
-#    - include-me-dir/**
   exclude:
     - node_modules/**
     - invest_guru/**/*_test.py
 
+
 functions:
-  hello:
-    handler: invest_guru.handlers.hello_handler.hello
   simpleMovingAverageAnalytic:
     handler: invest_guru.handlers.simple_moving_average_analytic_handler.handle
 
+
 resources:
   Resources:
-    CognitoSNSPolicy:
-      Type: AWS::IAM::ManagedPolicy
-      Properties:
-        Description: Managed policy to allow Amazon Cognito to access SNS
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Sid: AllowSNSPublishing
-              Effect: Allow
-              Action:
-                - sns:publish
-              Resource: "*"
 
-    SNSRole:
-      Type: AWS::IAM::Role
-      Description: "An IAM Role to allow Cognito to send SNS messages"
-      Properties:
-        RoleName: ${self:custom.name}-cognito-sns-role
-        ManagedPolicyArns:
-          - Ref: CognitoSNSPolicy
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
-                - sts:AssumeRole
-              Principal:
-                Service:
-                  - cognito-idp.amazonaws.com
-      DependsOn:
-        - CognitoSNSPolicy
+####################################################################################################################
+## IAM roles and policies
+####################################################################################################################
 
     LambdaRole:
       Type: AWS::IAM::Role
@@ -93,8 +60,6 @@ resources:
                 - Effect: Allow
                   Action: lambda:invokeFunction
                   Resource:
-                    - !GetAtt HelloLambdaFunction.Arn
-                    - !Join [ "", [ !GetAtt HelloLambdaFunction.Arn, "*" ] ]
                     - !GetAtt SimpleMovingAverageAnalyticLambdaFunction.Arn
                     - !Join [ "", [ !GetAtt SimpleMovingAverageAnalyticLambdaFunction.Arn, "*" ] ]
 
@@ -102,13 +67,6 @@ resources:
 ####################################################################################################################
 ## Lambda permissions
 ####################################################################################################################
-
-    LoggingHelloLambdaPermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: !GetAtt HelloLambdaFunction.Arn
-        Action: lambda:InvokeFunction
-        Principal: !Join ["", ["logs.", !Ref AWS::Region, ".amazonaws.com" ] ]
 
     LoggingSimpleMovingAverageAnalyticLambdaPermission:
       Type: AWS::Lambda::Permission
@@ -118,95 +76,9 @@ resources:
         Principal: !Join ["", ["logs.", !Ref AWS::Region, ".amazonaws.com" ] ]
 
 
-#    UserPool:
-#      Type: "AWS::Cognito::UserPool"
-#      Description: "A Cognito user pool for authenticating users"
-#      Properties:
-#        UserPoolName: ${self:custom.name}-user-pool
-#        AutoVerifiedAttributes:
-#          - phone_number
-#        MfaConfiguration: "ON"
-#        SmsConfiguration:
-#          ExternalId: ${self:custom.name}-external
-#          SnsCallerArn: { Fn::GetAtt: [SNSRole, Arn] }
-#        Schema:
-#          - Name: name
-#            AttributeDataType: String
-#            Mutable: true
-#            Required: true
-#          - Name: email
-#            AttributeDataType: String
-#            Mutable: false
-#            Required: true
-#          - Name: phone_number
-#            AttributeDataType: String
-#            Mutable: false
-#            Required: true
-#
-#    UserPoolClient:
-#      Type: "AWS::Cognito::UserPoolClient"
-#      Description: "App Client used by AWS AppSync"
-#      Properties:
-#        ClientName: ${self:custom.name}-appsync-client
-#        GenerateSecret: false
-#        UserPoolId: { Ref: UserPool }
-
-    DynamoDBNotesTable:
-      Type: AWS::DynamoDB::Table
-      Description: "Data store for AWS AppSync Notes Type"
-      Properties:
-        TableName: ${self:custom.name}-notes-table
-        AttributeDefinitions:
-          - AttributeName: "NoteId"
-            AttributeType: "S"
-          - AttributeName: "UserId"
-            AttributeType: "S"
-        KeySchema:
-          - AttributeName: "NoteId"
-            KeyType: "HASH"
-          - AttributeName: "UserId"
-            KeyType: "RANGE"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
-
-    DynamoDBRole:
-      Type: AWS::IAM::Role
-      Properties:
-        RoleName: ${self:custom.name}-appsync-dynamodb-role
-        ManagedPolicyArns:
-          - Ref: AppSyncDynamoDBPolicy
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
-                - sts:AssumeRole
-              Principal:
-                Service:
-                  - appsync.amazonaws.com
-      DependsOn:
-        - AppSyncDynamoDBPolicy
-
-    AppSyncDynamoDBPolicy:
-      Type: AWS::IAM::ManagedPolicy
-      Properties:
-        Description: Managed policy to allow AWS AppSync to access the tables created by this template.
-        Path: /appsync/
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:GetItem
-                - dynamodb:PutItem
-                - dynamodb:DeleteItem
-                - dynamodb:UpdateItem
-                - dynamodb:Query
-                - dynamodb:Scan
-                - dynamodb:BatchGetItem
-                - dynamodb:BatchWriteItem
-              Resource: !Join [ '', [!GetAtt DynamoDBNotesTable.Arn, '*' ] ]
+####################################################################################################################
+## AppSync API
+####################################################################################################################
 
     AppSyncApi:
       Type: AWS::AppSync::GraphQLApi
@@ -214,11 +86,6 @@ resources:
       Properties:
         AuthenticationType: "API_KEY"
         Name: ${self:custom.name}
-#        AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
-#        UserPoolConfig:
-#          UserPoolId: { Ref: UserPoolClient }
-#          AwsRegion: "us-east-1"
-#          DefaultAction: "ALLOW"
 
     AppSyncAPIKey:
       Type: AWS::AppSync::ApiKey
@@ -232,32 +99,10 @@ resources:
         ApiId: !GetAtt AppSyncApi.ApiId
         Definition: ${file(./schema.graphql)}
 
-    AppSyncNotesTableDataSource:
-      Type: AWS::AppSync::DataSource
-      Properties:
-        ApiId: !GetAtt AppSyncApi.ApiId
-        Name: ${self:custom.name}_notes_table
-        Description: "The Notes Table AppSync Data Source"
-        Type: AMAZON_DYNAMODB
-        ServiceRoleArn: !GetAtt DynamoDBRole.Arn
-        DynamoDBConfig:
-          TableName: !Ref DynamoDBNotesTable
-          AwsRegion: "us-east-1"
-
 
 ####################################################################################################################
 ## AppSync Lambda data sources
 ####################################################################################################################
-
-    AppSyncHelloWorldLambdaDataSource:
-      Type: AWS::AppSync::DataSource
-      Properties:
-        Type: AWS_LAMBDA
-        Name: ${self:custom.name}_${self:provider.stage}_hello_lambda_datasource
-        ApiId: !GetAtt AppSyncApi.ApiId
-        ServiceRoleArn: !GetAtt LambdaRole.Arn
-        LambdaConfig:
-          LambdaFunctionArn: !GetAtt HelloLambdaFunction.Arn
 
     AppSyncSimpleMovingAverageAnalyticLambdaDataSource:
       Type: AWS::AppSync::DataSource
@@ -273,22 +118,6 @@ resources:
 ####################################################################################################################
 ## AppSync Lambda query resolvers
 ####################################################################################################################
-
-    AppSyncHelloWorldQueryResolver:
-      Type: AWS::AppSync::Resolver
-      DependsOn: AppSyncSchema
-      Properties:
-        ApiId: !GetAtt AppSyncApi.ApiId
-        TypeName: Query
-        FieldName: helloWorld
-        DataSourceName: !GetAtt AppSyncHelloWorldLambdaDataSource.Name
-        RequestMappingTemplate: |
-          {
-            "version": "2017-02-28",
-            "operation": "Invoke",
-            "payload": $utils.toJson($context.arguments)
-          }
-        ResponseMappingTemplate: "$util.toJson($context.result)"
 
     AppSyncSimpleMovingAverageAnalyticQueryResolver:
       Type: AWS::AppSync::Resolver
@@ -306,118 +135,15 @@ resources:
           }
         ResponseMappingTemplate: "$util.toJson($context.result)"
 
-#    AppSyncResolver:
-#      Type: AWS::AppSync::Resolver
-#      Properties:
-#        ApiId: !GetAtt AppSyncApi.ApiId
-#        TypeName: Query
-#        FieldName: feed
-#        DataSourceName: !GetAtt [ AppSyncDataSource, Name ]
-#        RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke", "payload": $util.toJson($context.arguments) }'
-#        ResponseMappingTemplate: '$util.toJson($context.result)'
 
-
-#    AppSyncAllNotesQueryResolver:
-#      Type: "AWS::AppSync::Resolver"
-#      DependsOn: AppSyncSchema
-#      Properties:
-#        ApiId: !GetAtt AppSyncApi.ApiId
-#        TypeName: Query
-#        FieldName: allNotes
-#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
-#        RequestMappingTemplate: |
-#          {
-#            "version": "2017-02-28",
-#            "operation": "Query",
-#            "query": {
-#              "expression": "UserId = :id",
-#              "expressionValues": {
-#                ":id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
-#              }
-#            }
-#          },
-#          "limit": $util.defaultIfNull(${ctx.args.limit}, 20),
-#          "nextToken": $util.toJson(${ctx.args.nextToken})
-#        ResponseMappingTemplate: |
-#          {
-#            "notes": $util.toJson($ctx.result.items),
-#            "nextToken": $util.toJson(${ctx.args.nextToken})
-#          }
-#
-#    AppSyncGetNoteQueryResolver:
-#      Type: "AWS::AppSync::Resolver"
-#      DependsOn: AppSyncSchema
-#      Properties:
-#        ApiId: !GetAtt AppSyncApi.ApiId
-#        TypeName: Query
-#        FieldName: getNote
-#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
-#        RequestMappingTemplate: |
-#          {
-#            "version": "2012-02-28",
-#            "operation": "GetItem",
-#            "key": {
-#              "NoteId": $util.dynamodb.toDynamoDBJson($ctx.args.NoteId),
-#              "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
-#            }
-#          }
-#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
-#
-#    AppSyncSaveNoteMutationResolver:
-#      Type: "AWS::AppSync::Resolver"
-#      DependsOn: AppSyncSchema
-#      Properties:
-#        ApiId: !GetAtt AppSyncApi.ApiId
-#        TypeName: Mutation
-#        FieldName: saveNote
-#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
-#        RequestMappingTemplate: |
-#          {
-#            "version": "2012-02-28",
-#            "operation": "PutItem",
-#            "key": {
-#              "NoteId": $util.dynamodb.toDynamoDBJson($ctx.args.NoteId),
-#              "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
-#            },
-#            "attributeValues": {
-#              "title": $util.dynamodb.toDynamoDBJson($ctx.args.title),
-#              "content": $util.dynamodb.toDynamoDBJson($ctx.args.content)
-#            }
-#          }
-#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
-#
-#    AppSyncDeleteNoteMutationResolver:
-#      Type: "AWS::AppSync::Resolver"
-#      DependsOn: AppSyncSchema
-#      Properties:
-#        ApiId: !GetAtt AppSyncApi.ApiId
-#        TypeName: Mutation
-#        FieldName: deleteNote
-#        DataSourceName: !GetAtt AppSyncNotesTableDataSource.Name
-#        RequestMappingTemplate: |
-#          {
-#            "version": "2012-02-28",
-#            "operation": "DeleteItem",
-#            "key": {
-#              "NoteId": $util.dynamodb.toDynamoDBJson($ctx.args.NoteId),
-#              "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
-#            }
-#          }
-#        ResponseMappingTemplate: "$util.toJson($ctx.result)"
+####################################################################################################################
+## Outputs
+####################################################################################################################
 
   Outputs:
-#    CognitoUserPoolId:
-#      Description: The Pool ID of the Cognito User Pool
-#      Value: { Ref: UserPool }
-#    CognitoUserPoolClientId:
-#      Description: The Client ID for AWS AppSync Auth
-#      Value: { Ref: UserPoolClient }
     AppSyncAPIKey:
       Description: The AppSync API Key used for authorizing users making GraphQL invocations.
       Value: !GetAtt AppSyncAPIKey.ApiKey
-    DynamoDBNotesTableName:
-      Description: The name of the DynamoDB Table
-      Value: !Ref DynamoDBNotesTable
     GraphQLApiEndpoint:
       Description: The URL to the GraphQL Endpoint
       Value: !GetAtt AppSyncApi.GraphQLUrl
