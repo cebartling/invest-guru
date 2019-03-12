@@ -14,7 +14,6 @@ type SimpleMovingAverageAnalytic {
     averages300: [MovingAverageObservation!]!
 }
 
-
 type Query {
     simpleMovingAverageAnalytic(symbol: String!): SimpleMovingAverageAnalytic!
 }
