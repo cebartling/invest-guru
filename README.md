@@ -9,4 +9,4 @@ approachable platform for investment research.
 A serverless implementation using AWS technologies: AppSync, Lambda and DynamoDB to name a few of the services
 utilized here.
 
-
+[Go to the project README](./experiments/InvestGuruPrototype1/README.md)
