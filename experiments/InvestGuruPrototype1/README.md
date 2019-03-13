@@ -17,6 +17,8 @@ Using the Serverless Framework here to provision the solution in AWS.
 
 ### Node.js runtime
 
+This project expects you to be using `nvm` for managing your Node.js runtimes. 
+
 ```bash
 nvm use
 # If the correct Node.js runtime is not setup...
@@ -24,6 +26,7 @@ nvm install $(cat .nvmrc)
 
 yarn install
 ```
+
 
 ### Python 3.7
 
@@ -40,11 +43,6 @@ mkvirtualenv InvestGuruPrototype1
 workon InvestGuruPrototype1
 ```
 
-### Running the solution offline
-
-```bash
-serverless offline
-```
 
 ## Deploying to AWS
 
@@ -55,7 +53,16 @@ associated _Access Key ID_ and _Secret Access Key_.
 1. Deploy solution to AWS...
     
     ```bash
-    yarn deploy
+    yarn deploy-dev
+    ```
+    
+## Undeploying the solution from AWS
+
+Once you have finished tinkering with the solution in our AWS environment, you can conveniently remove it
+from your AWS environment:
+
+    ```bash
+    yarn undeploy-dev
     ```
     
     
