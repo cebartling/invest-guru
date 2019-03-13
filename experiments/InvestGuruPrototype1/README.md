@@ -9,9 +9,9 @@ Using the Serverless Framework here to provision the solution in AWS.
 
 ## Tools needed
 
-- nvm:
-- yarn:
-- pyenv:
+- nvm: [https://github.com/creationix/nvm]
+- yarn: [https://yarnpkg.com/lang/en/docs/install/#debian-stable]
+- pyenv: [https://github.com/pyenv/pyenv]
 
 ## Local development
 
