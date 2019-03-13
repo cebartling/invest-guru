@@ -1,10 +1,11 @@
 # InvestGuru Prototype 1
 
-Demonstration of using AWS Lambda, AppSync, and DynamoDB for an algorithmic trading system demonstration. 
+Demonstration of using AWS Lambda, AppSync, and DynamoDB for an algorithmic trading system demonstration. Using the Serverless Framework here to provision the solution in AWS.
 
- 
+I wrote a blog series around this experiment:
 
-Using the Serverless Framework here to provision the solution in AWS.
+- [Introduction]() 
+- [First GraphQL query]() 
 
 
 ## Tools needed
@@ -42,6 +43,15 @@ mkvirtualenv InvestGuruPrototype1
 
 workon InvestGuruPrototype1
 ```
+
+### Alpha Vantage integration
+
+This solution uses the [Alpha Vantage APIs](https://www.alphavantage.co/) for investment data and analytics. 
+A free API key can be obtained from Alpha Vantage by filling out 
+[this form](https://www.alphavantage.co/support/#api-key). Copy the generated API key
+and paste it into a text file named `.alphavantage` in the root directory of this experiment project 
+(not the root of the git repository). I have added an entry to the `.gitignore` file to exclude this 
+hidden file from being version controlled.
 
 
 ## Deploying to AWS
