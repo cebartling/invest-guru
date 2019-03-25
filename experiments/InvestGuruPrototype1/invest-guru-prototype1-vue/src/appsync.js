@@ -18,9 +18,9 @@ const options = {
   }
 };
 
-const client = new AWSAppSyncClient(config, options);
+const defaultClient = new AWSAppSyncClient(config, options);
 
-const apolloProvider = new VueApollo({ defaultClient: client });
+const apolloProvider = new VueApollo({ defaultClient });
 
 Vue.use(VueApollo);
 
