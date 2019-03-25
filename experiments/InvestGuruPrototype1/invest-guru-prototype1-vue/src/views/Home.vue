@@ -6,13 +6,22 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
+import simpleMovingAverageAnalyticQuery from "@/graphql/SimpleMovingAverageAnalyticQuery";
 
 export default {
   name: "home",
   components: {
     HelloWorld
+  },
+  apollo: {
+    simpleMovingAverageAnalytic: {
+      query: simpleMovingAverageAnalyticQuery,
+      variables: {
+        symbol: "TSLA"
+      },
+      fetchPolicy: "cache-and-network"
+    }
   }
 };
 </script>
