@@ -18,6 +18,12 @@ import simpleMovingAverageAnalyticQuery from "@/graphql/SimpleMovingAverageAnaly
 export default {
   name: "SimpleMovingAverageChartContainer",
   components: { SimpleMovingAverageChart },
+  props: {
+    symbol: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       loaded: false,
@@ -57,13 +63,23 @@ export default {
         ],
         datasets: [
           {
+            backgroundColor: "#fc6c71",
+            borderColor: "#FC2525",
+            borderWidth: 2,
             label: "Data One",
-            backgroundColor: "#FC2525",
+            fill: false,
+            pointBackgroundColor: "#FC2525",
+            pointBorderColor: "#FC2525",
             data: [40, 39, 10, 40, 39, 80, 40]
           },
           {
+            borderColor: "#05CBE1",
+            borderWidth: 2,
             label: "Data Two",
-            backgroundColor: "#05CBE1",
+            fill: false,
+            backgroundColor: "#8dd1e1",
+            pointBackgroundColor: "#05CBE1",
+            pointBorderColor: "#05CBE1",
             data: [60, 55, 32, 10, 2, 12, 53]
           }
         ]
@@ -75,7 +91,7 @@ export default {
       query: simpleMovingAverageAnalyticQuery,
       variables() {
         return {
-          symbol: "TSLA"
+          symbol: this.symbol
         };
       },
       fetchPolicy: "cache-and-network",
