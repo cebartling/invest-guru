@@ -1,27 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1>Home</h1>
+    <div>
+      <simple-moving-average-chart-container></simple-moving-average-chart-container>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
 import simpleMovingAverageAnalyticQuery from "@/graphql/SimpleMovingAverageAnalyticQuery";
+import SimpleMovingAverageChartContainer from "@/components/charts/SimpleMovingAverageChartContainer";
 
 export default {
   name: "home",
-  components: {
-    HelloWorld
-  },
-  apollo: {
-    simpleMovingAverageAnalytic: {
-      query: simpleMovingAverageAnalyticQuery,
-      variables: {
-        symbol: "TSLA"
-      },
-      fetchPolicy: "cache-and-network"
-    }
-  }
+  components: { SimpleMovingAverageChartContainer }
 };
 </script>
