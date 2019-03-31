@@ -16,7 +16,7 @@ export default {
   name: "home",
   data() {
     return {
-      symbol: "TSLA"
+      symbol: "MSFT"
     };
   },
   components: { SimpleMovingAverageChartContainer }

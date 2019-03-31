@@ -2,7 +2,7 @@
   <div class="simple-moving-average-chart">
     <simple-moving-average-chart
       v-if="loaded"
-      :chartdata="chartdata"
+      :chart-data="chartData"
       :options="options"
     ></simple-moving-average-chart>
     <div class="alert alert-info" v-if="!loaded">
@@ -14,6 +14,7 @@
 <script>
 import SimpleMovingAverageChart from "@/components/charts/SimpleMovingAverageChart";
 import simpleMovingAverageAnalyticQuery from "@/graphql/SimpleMovingAverageAnalyticQuery";
+import { takeRight, each, find } from "lodash";
 
 export default {
   name: "SimpleMovingAverageChartContainer",
@@ -26,61 +27,62 @@ export default {
   },
   data() {
     return {
+      numberOfObservations: 30,
       loaded: false,
-      chartdata: null,
+      chartData: null,
       options: { responsive: true, maintainAspectRatio: false }
     };
   },
   methods: {
-    buildChartData() {
-      // let observations = 0;
-      // const today = moment();
-      // while (observations < 10) {
-      // }
+    buildChartDataSets(data) {
+      const lastAverage50Observations = takeRight(
+        data.simpleMovingAverageAnalytic.averages50,
+        this.numberOfObservations
+      );
+      const lastAverage300Observations = takeRight(
+        data.simpleMovingAverageAnalytic.averages300,
+        this.numberOfObservations
+      );
 
-      // const data1 = data.simpleMovingAverageAnalytic.averages50.map(
-      //   observation => {
-      //     // return { x: observation.date, y: observation.value };
-      //     return observation.value;
-      //   }
-      // );
-      // let data2 = data.simpleMovingAverageAnalytic.averages300.map(
-      //   observation => {
-      //     // return { x: observation.date, y: observation.value };
-      //     return observation.value;
-      //   }
-      // );
+      const labels = [];
+      const observations50averages = [];
+      const observations300averages = [];
+      each(lastAverage50Observations, average50Observation => {
+        const match = find(
+          lastAverage300Observations,
+          average300Observation => {
+            return average300Observation.date === average50Observation.date;
+          }
+        );
+        if (match) {
+          labels.push(average50Observation.date);
+          observations50averages.push(average50Observation.value);
+          observations300averages.push(match.value);
+        }
+      });
 
       return {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July"
-        ],
+        labels: labels,
         datasets: [
           {
             backgroundColor: "#fc6c71",
             borderColor: "#FC2525",
             borderWidth: 2,
-            label: "Data One",
+            label: "50 day simple moving average",
             fill: false,
             pointBackgroundColor: "#FC2525",
             pointBorderColor: "#FC2525",
-            data: [40, 39, 10, 40, 39, 80, 40]
+            data: observations50averages
           },
           {
             borderColor: "#05CBE1",
             borderWidth: 2,
-            label: "Data Two",
+            label: "300 day simple moving average",
             fill: false,
             backgroundColor: "#8dd1e1",
             pointBackgroundColor: "#05CBE1",
             pointBorderColor: "#05CBE1",
-            data: [60, 55, 32, 10, 2, 12, 53]
+            data: observations300averages
           }
         ]
       };
@@ -95,9 +97,9 @@ export default {
         };
       },
       fetchPolicy: "cache-and-network",
-      result({ data, loading }) {
-        if (!loading && data) {
-          this.chartdata = this.buildChartData();
+      result({ data, loading, error }) {
+        if (!loading && !error && data) {
+          this.chartData = this.buildChartDataSets(data);
           this.loaded = true;
         }
       },
@@ -111,5 +113,8 @@ export default {
 
 <style scoped lang="scss">
 .simple-moving-average-chart {
+  padding: 12px;
+  border: 1.5px solid rgb(223, 223, 223);
+  border-radius: 5px;
 }
 </style>
