@@ -114,10 +114,6 @@ resources:
           ExternalId: ${self:custom.name}-external
           SnsCallerArn: !GetAtt SNSRole.Arn
         Schema:
-          - Name: name
-            AttributeDataType: String
-            Mutable: true
-            Required: true
           - Name: email
             AttributeDataType: String
             Mutable: false
@@ -222,3 +218,9 @@ resources:
     GraphQLApiId:
       Description: The API ID of the GraphQL API
       Value: !GetAtt AppSyncApi.ApiId
+    UserPoolId:
+      Description: The Id of the UserPool
+      Value: !Ref UserPool
+    UserPoolClientId:
+      Description: The Id of the UserPool
+      Value: !Ref UserPoolClient

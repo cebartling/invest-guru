@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Home from "@/views/Home.vue";
+import FrontDoor from "@/views/FrontDoor";
 
 Vue.use(Router);
 
@@ -10,6 +11,11 @@ export default new Router({
   routes: [
     {
       path: "/",
+      name: "frontDoor",
+      component: FrontDoor
+    },
+    {
+      path: "/home",
       name: "home",
       component: Home
     }
