@@ -15,7 +15,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" v-if="isSignOutShown">
+        <li class="nav-item" v-if="signedIn">
           <amplify-sign-out></amplify-sign-out>
         </li>
       </ul>
@@ -30,23 +30,18 @@ export default {
   name: "Header",
   data() {
     return {
-      isSignOutShown: !!this.getCurrentAuthenticatedUser()
+      signedIn: false
     };
   },
-  methods: {
-    async getCurrentAuthenticatedUser() {
-      try {
-        return await this.$Amplify.Auth.currentAuthenticatedUser({
-          bypassCache: false
-        });
-      } catch (onRejected) {
-        return undefined;
-      }
+  async beforeCreate() {
+    try {
+      await this.$Amplify.Auth.currentAuthenticatedUser();
+      this.signedIn = true;
+    } catch (err) {
+      this.signedIn = false;
     }
-  },
-  mounted() {
-    AmplifyEventBus.$on("authState", function() {
-      this.isSignOutShown = !!this.getCurrentAuthenticatedUser();
+    AmplifyEventBus.$on("authState", info => {
+      this.signedIn = info === "signedIn";
     });
   }
 };
