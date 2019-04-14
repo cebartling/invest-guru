@@ -153,6 +153,10 @@ resources:
       Description: "The Invest Guru GraphQL API"
       Properties:
         AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
+        UserPoolConfig:
+          UserPoolId: !Ref UserPool
+          AwsRegion: ${self:provider.region}
+          DefaultAction: "ALLOW"
         Name: ${self:custom.name}
 
 #    AppSyncAPIKey:
