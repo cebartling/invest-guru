@@ -1,10 +1,10 @@
 <template>
   <div class="simple-moving-average-chart">
-    <simple-moving-average-chart
+    <line-chart
       v-if="loaded"
       :chart-data="chartData"
       :options="options"
-    ></simple-moving-average-chart>
+    ></line-chart>
     <div class="alert alert-info" v-if="!loaded">
       Loading data...
     </div>
@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import SimpleMovingAverageChart from "@/components/charts/SimpleMovingAverageChart";
 import simpleMovingAverageAnalyticQuery from "@/graphql/SimpleMovingAverageAnalyticQuery";
-import { takeRight, each, find } from "lodash";
+import { each, find, takeRight } from "lodash";
+import LineChart from "@/components/charts/LineChart";
 
 export default {
   name: "SimpleMovingAverageChartContainer",
-  components: { SimpleMovingAverageChart },
+  components: { LineChart },
   props: {
     symbol: {
       type: String,

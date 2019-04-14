@@ -11,7 +11,7 @@ graphql-core==2.1
 graphql-relay==0.4.5
 idna==2.8
 imagesize==1.1.0
-Jinja2==2.10
+Jinja2>=2.10.1
 MarkupSafe==1.1.1
 more-itertools==6.0.0
 packaging==19.0
