@@ -7,7 +7,10 @@ const config = {
   region: process.env.VUE_APP_AWS_APPSYNC_REGION,
   auth: {
     type: process.env.VUE_APP_AWS_APPSYNC_AUTH_TYPE,
-    apiKey: process.env.VUE_APP_AWS_APPSYNC_API_KEY
+    jwtToken: async () => {
+      const currentSession = await Vue.prototype.$Amplify.Auth.currentSession();
+      return currentSession.getAccessToken().getJwtToken();
+    }
   }
 };
 const options = {

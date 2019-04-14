@@ -1,7 +1,7 @@
 import { Line, mixins } from "vue-chartjs";
 
 export default {
-  name: "SimpleMovingAverageChart",
+  name: "LineChart",
   extends: Line,
   mixins: [mixins.reactiveProp],
   props: {

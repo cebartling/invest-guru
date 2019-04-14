@@ -114,10 +114,6 @@ resources:
           ExternalId: ${self:custom.name}-external
           SnsCallerArn: !GetAtt SNSRole.Arn
         Schema:
-          - Name: name
-            AttributeDataType: String
-            Mutable: true
-            Required: true
           - Name: email
             AttributeDataType: String
             Mutable: false
@@ -156,14 +152,12 @@ resources:
       Type: AWS::AppSync::GraphQLApi
       Description: "The Invest Guru GraphQL API"
       Properties:
-        AuthenticationType: "API_KEY"
+        AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
+        UserPoolConfig:
+          UserPoolId: !Ref UserPool
+          AwsRegion: ${self:provider.region}
+          DefaultAction: "ALLOW"
         Name: ${self:custom.name}
-
-    AppSyncAPIKey:
-      Type: AWS::AppSync::ApiKey
-      Properties:
-        ApiId: !GetAtt AppSyncApi.ApiId
-        Expires: ${env:API_KEY_EXPIRATION}
 
     AppSyncSchema:
       Type: AWS::AppSync::GraphQLSchema
@@ -213,12 +207,15 @@ resources:
 ####################################################################################################################
 
   Outputs:
-    AppSyncAPIKey:
-      Description: The AppSync API Key used for authorizing users making GraphQL invocations.
-      Value: !GetAtt AppSyncAPIKey.ApiKey
     GraphQLApiEndpoint:
       Description: The URL to the GraphQL Endpoint
       Value: !GetAtt AppSyncApi.GraphQLUrl
     GraphQLApiId:
       Description: The API ID of the GraphQL API
       Value: !GetAtt AppSyncApi.ApiId
+    UserPoolId:
+      Description: The Id of the UserPool
+      Value: !Ref UserPool
+    UserPoolClientId:
+      Description: The Id of the UserPool
+      Value: !Ref UserPoolClient
