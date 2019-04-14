@@ -1,5 +1,5 @@
 <template>
-  <div class="front-door">
+  <div class="front-door mt-4">
     <amplify-authenticator></amplify-authenticator>
   </div>
 </template>
@@ -14,7 +14,11 @@ export default {
   },
   mounted() {
     AmplifyEventBus.$on("authState", eventInfo => {
-      console.log("FrontDoor: Amplify emitted", eventInfo);
+      if (eventInfo === "signedIn") {
+        this.$router.push({ name: "home" });
+      } else if (eventInfo === "signedOut") {
+        this.$router.push({ name: "frontDoor" });
+      }
     });
   }
 };
