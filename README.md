@@ -6,7 +6,7 @@ approachable platform for investment research.
 
 ## Invest Guru Prototype 1
 
-A serverless implementation using AWS technologies: AppSync, Lambda and DynamoDB to name a few of the services
+A serverless implementation using AWS technologies: AppSync, Lambda, Cognito and DynamoDB to name a few of the services
 utilized here.
 
 [Go to the project README](./experiments/InvestGuruPrototype1)
