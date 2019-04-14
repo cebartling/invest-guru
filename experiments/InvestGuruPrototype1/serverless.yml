@@ -207,9 +207,6 @@ resources:
 ####################################################################################################################
 
   Outputs:
-#    AppSyncAPIKey:
-#      Description: The AppSync API Key used for authorizing users making GraphQL invocations.
-#      Value: !GetAtt AppSyncAPIKey.ApiKey
     GraphQLApiEndpoint:
       Description: The URL to the GraphQL Endpoint
       Value: !GetAtt AppSyncApi.GraphQLUrl
