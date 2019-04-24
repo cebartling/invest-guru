@@ -2312,7 +2312,7 @@ lodash.values@^4.3.0:
   resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
   integrity sha1-o6bCsOvsxcLLocF+bmIP6BtT00c=
 
-lodash@^4.13.1, lodash@^4.17.0, lodash@^4.17.11, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.8.0:
+lodash@^4.13.1, lodash@^4.17.0, lodash@^4.17.11, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.8.0:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
@@ -3104,15 +3104,12 @@ serverless-dynamodb-local@0.2.36:
     mkdirp "^0.5.0"
     tar "^2.0.0"
 
-serverless-finch@2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/serverless-finch/-/serverless-finch-2.3.2.tgz#1d9209ef21451baefb4cd5c4b21f24fc9e41e833"
-  integrity sha512-VplExT0o74v4QEde2FgkIUZRoQRH3EEnhUpUMlWPzjMpO8i3C4mmzZDZtVuBcjVl27LDiI09gjV1ihOHByMH3Q==
+serverless-finch@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/serverless-finch/-/serverless-finch-2.4.2.tgz#0c3ab10a95f713318743b24e9bca2250b3130b85"
+  integrity sha512-CgCB9u9NuWv/wosjo4nCvPifrZ3mHKh4Aco/ALs2Nv1FYW/Ak9AqX4kVvzKUmXsPG2B3bj6EVoUJZp6JTzkaaw==
   dependencies:
-    async "^1.5.2"
-    bluebird "^3.0.6"
     is_js "^0.9.0"
-    lodash "^4.2.1"
     mime "^1.2.11"
     minimatch "^3.0.4"
     prompt-confirm "^1.2.0"

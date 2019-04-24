@@ -5,6 +5,7 @@ frameworkVersion: ">=1.38.0"
 
 plugins:
   - serverless-python-requirements
+  - serverless-finch
 
 
 provider:
@@ -21,7 +22,9 @@ custom:
   name: "InvestGuruPrototype1API"
   pythonRequirements:
     dockerizePip: false
-
+  client:
+    bucketName: your-unique-s3-bucketname
+    distributionFolder: invest-guru-prototype1-vue/dist
 
 package:
   exclude:
