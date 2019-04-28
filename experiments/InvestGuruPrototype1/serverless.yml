@@ -205,54 +205,6 @@ resources:
         ResponseMappingTemplate: "$util.toJson($context.result)"
 
 
-
-####################################################################################################################
-## S3 Bucket
-####################################################################################################################
-
-    WebAppBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        AccessControl: PublicRead
-        BucketName: "invest-guru-webapp"
-        CorsConfiguration:
-          CorsRules:
-            -
-              AllowedOrigins:
-                - '*'
-              AllowedHeaders:
-                - '*'
-              AllowedMethods:
-                - GET
-                - PUT
-                - POST
-                - DELETE
-                - HEAD
-              MaxAge: 3000
-        WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: error.html
-      DeletionPolicy: Retain
-
-    WebAppBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        PolicyDocument:
-          Id: InvestGuruWebAppBucketPolicy
-          Version: "2012-10-17"
-          Statement:
-            - Sid: PublicReadForGetBucketObjects
-              Effect: Allow
-              Principal: '*'
-              Action: 's3:GetObject'
-              Resource: !Join
-                - ''
-                - - 'arn:aws:s3:::'
-                  - !Ref WebAppBucket
-                  - /*
-        Bucket: !Ref WebAppBucket
-
-
 ####################################################################################################################
 ## Outputs
 ####################################################################################################################
@@ -270,16 +222,3 @@ resources:
     UserPoolClientId:
       Description: The Id of the UserPool
       Value: !Ref UserPoolClient
-    WebsiteURL:
-      Description: The URL for the web site hosted on S3
-      Value: !GetAtt
-        - WebAppBucket
-        - WebsiteURL
-    S3BucketSecureURL:
-      Value: !Join
-        - ''
-        - - 'https://'
-          - !GetAtt
-            - WebAppBucket
-            - DomainName
-      Description: Name of S3 bucket to hold website content

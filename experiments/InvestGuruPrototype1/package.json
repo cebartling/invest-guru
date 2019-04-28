@@ -6,6 +6,8 @@
   "scripts": {
     "offline": "./node_modules/.bin/serverless offline",
     "deploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless deploy -v --stage dev",
+    "deploy-client": "./node_modules/.bin/serverless client deploy -v",
+    "undeploy-client": "./node_modules/.bin/serverless client remove -v",
     "undeploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless remove -v --stage dev"
   },
   "keywords": [
