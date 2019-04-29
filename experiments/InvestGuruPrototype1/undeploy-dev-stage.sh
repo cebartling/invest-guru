@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
 set -ex
-
 
 yarn undeploy-dev
 
