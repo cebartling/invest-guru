@@ -222,3 +222,6 @@ resources:
     UserPoolClientId:
       Description: The Id of the UserPool
       Value: !Ref UserPoolClient
+    AwsRegion:
+      Description: Region that is being used for these AWS resources
+      Value: !Ref "AWS::Region"

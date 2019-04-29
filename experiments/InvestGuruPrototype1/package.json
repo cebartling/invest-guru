@@ -7,6 +7,8 @@
     "offline": "./node_modules/.bin/serverless offline",
     "deploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless deploy -v --stage dev",
     "deploy-client": "./node_modules/.bin/serverless client deploy -v",
+    "serverless-info": "./node_modules/.bin/serverless info --verbose | tee ./.sls-info",
+    "create-prod-env": "node scripts/process-outputs.js",
     "undeploy-client": "./node_modules/.bin/serverless client remove -v",
     "undeploy-dev": "export API_KEY_EXPIRATION=`date -d \"+7 days\" +%s` && ./node_modules/.bin/serverless remove -v --stage dev"
   },
@@ -21,7 +23,8 @@
     "aws dynamodb",
     "amazon",
     "amazon web services",
-    "serverless.com"
+    "serverless.com",
+    "Vue.js"
   ],
   "author": "",
   "license": "ISC",
