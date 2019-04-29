@@ -5,6 +5,7 @@ frameworkVersion: ">=1.38.0"
 
 plugins:
   - serverless-python-requirements
+  - serverless-finch
 
 
 provider:
@@ -21,7 +22,9 @@ custom:
   name: "InvestGuruPrototype1API"
   pythonRequirements:
     dockerizePip: false
-
+  client:
+    bucketName: "invest-guru-webapp"
+    distributionFolder: invest-guru-prototype1-vue/dist
 
 package:
   exclude:
@@ -219,3 +222,6 @@ resources:
     UserPoolClientId:
       Description: The Id of the UserPool
       Value: !Ref UserPoolClient
+    AwsRegion:
+      Description: Region that is being used for these AWS resources
+      Value: !Ref "AWS::Region"
