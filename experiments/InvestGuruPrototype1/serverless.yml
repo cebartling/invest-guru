@@ -101,6 +101,38 @@ resources:
         - CognitoSNSPolicy
 
 
+
+####################################################################################################################
+## Virtual private cloud
+####################################################################################################################
+
+    VPC:
+      Type: AWS::EC2::VPC
+      Properties:
+        CidrBlock: 172.31.0.0/16
+        EnableDnsSupport: true
+        EnableDnsHostnames: true
+        InstanceTenancy: default
+
+    RedisSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        VpcId: !Ref VPC
+        GroupDescription: "A component security group allowing access only to redis"
+
+    ElasticacheComponentSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: "Elasticache security group"
+        SecurityGroupIngress:
+          -
+            IpProtocol: "tcp"
+            FromPort: "6379"
+            ToPort: "6379"
+            SourceSecurityGroupId: !Ref RedisSecurityGroup
+        VpcId: !Ref VPC
+
+
 ####################################################################################################################
 ## Cognito
 ####################################################################################################################
