@@ -109,10 +109,17 @@ resources:
     InvestGuruVpc:
       Type: AWS::EC2::VPC
       Properties:
-        CidrBlock: 172.31.0.0/16
-        EnableDnsSupport: true
-        EnableDnsHostnames: true
+        CidrBlock: 10.0.0.0/16
+        EnableDnsSupport: false
+        EnableDnsHostnames: false
         InstanceTenancy: default
+
+    InvestGuruSubnet:
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId: !Ref InvestGuruVpc
+        CidrBlock: 10.0.0.0/24
+        AvailabilityZone: "us-east-1a"
 
     RedisSecurityGroup:
       Type: AWS::EC2::SecurityGroup

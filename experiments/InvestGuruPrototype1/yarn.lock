@@ -3173,10 +3173,10 @@ serverless-finch@2.4.2:
     minimatch "^3.0.4"
     prompt-confirm "^1.2.0"
 
-serverless-offline@4.10.0:
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-4.10.0.tgz#608ae9e1a85886fc80532610ff06e9e684e99901"
-  integrity sha512-5UnPVv2Sljl2TVxLmdJ3knPAwf/EmFEqumF+bEfRifah+1SuJV5JtNGVphoVmdeV24qngat2Wd/VRM43S7ipqw==
+serverless-offline@4.10.6:
+  version "4.10.6"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-4.10.6.tgz#bdbb3f4b4429e649665c9267f3d3cb2c662010cb"
+  integrity sha512-4l8ngzsX90iq8SRm4wGzGv0688bKPCAXYm60dqaW1ipXVp1BvV/BcFQp+4UKPUnkzSqqvyisLc6oa3K7kkAAZw==
   dependencies:
     boom "^7.3.0"
     cryptiles "^4.1.3"
@@ -3209,10 +3209,10 @@ serverless-python-requirements@4.3.0:
     rimraf "^2.6.2"
     shell-quote "^1.6.1"
 
-serverless@1.42.2:
-  version "1.42.2"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-1.42.2.tgz#1387d0effb8b19c7ee9cf7af6774227b315d7cbc"
-  integrity sha512-+XV0NhYhqw+lVIoHgqpuYpAJcK0ukw++mPLvcBgOHbooA/ytF2HOYI4hOxQYAGarYMwtBXMUw7y6MWfLWtKggA==
+serverless@1.43.0:
+  version "1.43.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-1.43.0.tgz#4677e7b33f00c2e943018562868d6ba9cc4a52fa"
+  integrity sha512-3fQM7vwlUkJZbKpKFFKfDJYNkD1c5UxiAA+JWHY2JiD4Rkn5RVX89ToeR5+rzsT9+ewr2WJ9TqTVM+pd9WjOvA==
   dependencies:
     archiver "^1.1.0"
     async "^1.5.2"
