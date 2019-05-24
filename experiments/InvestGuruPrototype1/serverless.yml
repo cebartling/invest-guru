@@ -144,19 +144,27 @@ resources:
 ## Elasticache Redis
 ####################################################################################################################
 
-#    ServiceComponentElasticache:
-#      Type: AWS::ElastiCache::CacheCluster
-#      Properties:
-#        AZMode: "single-az"
-#        CacheNodeType: "cache.t2.micro"
-#        ClusterName: "redis-cluster"
-#        Engine: "redis"
-#        EngineVersion: "5.0.3"
-#        NumCacheNodes: 1
-#        SnapshotRetentionLimit: 1
-#        VpcSecurityGroupIds:
-#          -
-#            !Ref ElasticacheComponentSecurityGroup
+    ElasticacheSubnetGroup:
+      Type: AWS::ElastiCache::SubnetGroup
+      Properties:
+        CacheSubnetGroupName: "invest-guru-elasticache-subnet-group"
+        Description: "Elasticache subnet group"
+        SubnetIds:
+          - !Ref InvestGuruSubnet
+
+    ServiceComponentElasticache:
+      Type: AWS::ElastiCache::CacheCluster
+      Properties:
+        AZMode: "single-az"
+        CacheNodeType: "cache.t2.micro"
+        CacheSubnetGroupName: "invest-guru-elasticache-subnet-group"
+        ClusterName: "redis-cluster"
+        Engine: "redis"
+        EngineVersion: "5.0.3"
+        NumCacheNodes: 1
+        SnapshotRetentionLimit: 1
+        VpcSecurityGroupIds:
+          - !Ref ElasticacheComponentSecurityGroup
 
 
 ####################################################################################################################
