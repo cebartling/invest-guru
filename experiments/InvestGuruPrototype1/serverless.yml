@@ -106,7 +106,7 @@ resources:
 ## Virtual private cloud
 ####################################################################################################################
 
-    VPC:
+    InvestGuruVpc:
       Type: AWS::EC2::VPC
       Properties:
         CidrBlock: 172.31.0.0/16
@@ -117,8 +117,8 @@ resources:
     RedisSecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
-        VpcId: !Ref VPC
-        GroupDescription: "A component security group allowing access only to redis"
+        VpcId: !Ref InvestGuruVpc
+        GroupDescription: "A component security group allowing access only to Redis"
 
     ElasticacheComponentSecurityGroup:
       Type: AWS::EC2::SecurityGroup
@@ -130,7 +130,26 @@ resources:
             FromPort: "6379"
             ToPort: "6379"
             SourceSecurityGroupId: !Ref RedisSecurityGroup
-        VpcId: !Ref VPC
+        VpcId: !Ref InvestGuruVpc
+
+
+####################################################################################################################
+## Elasticache Redis
+####################################################################################################################
+
+#    ServiceComponentElasticache:
+#      Type: AWS::ElastiCache::CacheCluster
+#      Properties:
+#        AZMode: "single-az"
+#        CacheNodeType: "cache.t2.micro"
+#        ClusterName: "redis-cluster"
+#        Engine: "redis"
+#        EngineVersion: "5.0.3"
+#        NumCacheNodes: 1
+#        SnapshotRetentionLimit: 1
+#        VpcSecurityGroupIds:
+#          -
+#            !Ref ElasticacheComponentSecurityGroup
 
 
 ####################################################################################################################
