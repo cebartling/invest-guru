@@ -14,6 +14,7 @@ provider:
   stage: dev
   region: us-east-1
   profile: InvestGuruAdmin
+  role: LambdaVPCAccessExecutionRole
   environment:
     alphaVantageApiKey: ${file(./.alphavantage)}
 
@@ -43,6 +44,23 @@ resources:
 ####################################################################################################################
 ## IAM roles and policies
 ####################################################################################################################
+
+    LambdaVPCAccessExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: MyDefaultRole # required if you want to use 'serverless deploy --function' later on
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        # note that these rights are needed if you want your function to be able to communicate with resources within your vpc
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+
 
     LambdaRole:
       Type: AWS::IAM::Role
@@ -101,7 +119,6 @@ resources:
         - CognitoSNSPolicy
 
 
-
 ####################################################################################################################
 ## Virtual private cloud
 ####################################################################################################################
@@ -110,8 +127,8 @@ resources:
       Type: AWS::EC2::VPC
       Properties:
         CidrBlock: 10.0.0.0/16
-        EnableDnsSupport: false
-        EnableDnsHostnames: false
+        EnableDnsSupport: true
+        EnableDnsHostnames: true
         InstanceTenancy: default
 
     InvestGuruSubnet:
@@ -157,7 +174,7 @@ resources:
       Properties:
         AZMode: "single-az"
         CacheNodeType: "cache.t2.micro"
-        CacheSubnetGroupName: "invest-guru-elasticache-subnet-group"
+        CacheSubnetGroupName: !Ref ElasticacheSubnetGroup
         ClusterName: "redis-cluster"
         Engine: "redis"
         EngineVersion: "5.0.3"
@@ -165,6 +182,20 @@ resources:
         SnapshotRetentionLimit: 1
         VpcSecurityGroupIds:
           - !Ref ElasticacheComponentSecurityGroup
+
+#    DnsRedis:
+#      Type: AWS::Route53::RecordSetGroup
+#      Properties:
+##        HostedZoneName: 'a.hosted.zone.name.'
+#        RecordSets:
+#          - Name: 'a.record.set.name'
+#            Type: CNAME
+#            TTL: '300'
+#            ResourceRecords:
+#              - !GetAtt
+#                - ServiceComponentElasticache
+#                - RedisEndpoint.Address
+#      DependsOn: ServiceComponentElasticache
 
 
 ####################################################################################################################
@@ -291,3 +322,6 @@ resources:
     AwsRegion:
       Description: Region that is being used for these AWS resources
       Value: !Ref "AWS::Region"
+#    RedisEndpointAddress:
+#      Description: DNS host name of the Redis cache cluster
+#      Value: !GetAtt ServiceComponentElasticache.RedisEndpoint.Address
