@@ -35,6 +35,7 @@ package:
 functions:
   simpleMovingAverageAnalytic:
     handler: invest_guru.handlers.simple_moving_average_analytic_handler.handle
+    timeout: 30
 
 
 resources:
