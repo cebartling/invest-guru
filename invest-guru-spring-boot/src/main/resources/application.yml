@@ -1,0 +1,25 @@
+
+auth0:
+  audience: https://cebartling.auth0.com/api/v2/
+
+spring:
+  application:
+    name: InvestGuru
+  datasource:
+    url: ${JDBC_URL}
+    username: investguru
+    password: investguru
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cebartling.auth0.com/
+
