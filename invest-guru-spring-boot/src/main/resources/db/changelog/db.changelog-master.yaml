@@ -28,6 +28,17 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: email
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: locale
+                  type: varchar(6)
+                  constraints:
+                    nullable: false
+              - column:
                   name: created_at
                   type: timestamp
                   defaultValueDate: now()
@@ -39,4 +50,110 @@ databaseChangeLog:
                   defaultValueDate: now()
                   constraints:
                     nullable: false
+      rollback:
+        - dropTable:
+            tableName: users
 
+  - changeSet:
+      id: 20191127233342
+      author: cebartling
+      changes:
+        - createTable:
+            tableName: stocks
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ticker_symbol
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: company_name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: stocks
+
+  - changeSet:
+      id: 20191127234802
+      author: cebartling
+      changes:
+        - createTable:
+            tableName: users_stocks
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_stocks
+            constraintName: fk_users_stocks_users
+            referencedColumnNames: id
+            referencedTableName: users
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: stock_id
+            baseTableName: users_stocks
+            constraintName: fk_users_stocks_stocks
+            referencedColumnNames: id
+            referencedTableName: stocks
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            validate: true
+      rollback:
+        - dropForeignKeyConstraint:
+            constraintName: fk_users_stocks_users
+        - dropForeignKeyConstraint:
+            constraintName: fk_users_stocks_stocks
+        - dropTable:
+            tableName: users_stocks

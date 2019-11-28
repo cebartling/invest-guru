@@ -1,12 +1,12 @@
 type Query {
-  userAccountByEmail(email: String!): UserAccount
+  userByEmail(email: String!): User
 }
 
 type Mutation {
-  createUserAccount(userAccountInput: UserAccountInput!): UserAccount
+  createUser(userInput: UserInput!): User
 }
 
-type UserAccount {
+type User {
   id: ID!
   givenName: String!
   familyName: String!
@@ -14,7 +14,7 @@ type UserAccount {
   email: String!
 }
 
-input UserAccountInput {
+input UserInput {
   givenName: String!
   familyName: String!
   locale: String!
