@@ -25,11 +25,7 @@ public class UserDataFetchers {
         return environment -> {
             final var arguments = environment.getArguments();
             final String email = arguments.get("email").toString();
-            User user = null;
-            final var usersByEmail = userRepository.findByEmail(email);
-            if (usersByEmail.size() != 0) {
-                user = usersByEmail.get(0);
-            }
+            User user = userRepository.findByEmail(email);
             return user;
         };
     }
@@ -42,8 +38,8 @@ public class UserDataFetchers {
             final var userInput = UserInput.fromMap(inputMap);
             log.info(String.format("====> userInput: %s", userInput));
 
-            final var usersByEmail = userRepository.findByEmail(userInput.getEmail());
-            if (usersByEmail.size() == 0) {
+            final var user = userRepository.findByEmail(userInput.getEmail());
+            if (user == null) {
                 final var unpersisted = new User();
                 unpersisted.setEmail(userInput.getEmail());
                 unpersisted.setFamilyName(userInput.getFamilyName());
@@ -51,7 +47,7 @@ public class UserDataFetchers {
                 unpersisted.setLocale(userInput.getLocale());
                 return this.userRepository.save(unpersisted);
             } else {
-                return usersByEmail.get(0);
+                return user;
             }
         };
     }
