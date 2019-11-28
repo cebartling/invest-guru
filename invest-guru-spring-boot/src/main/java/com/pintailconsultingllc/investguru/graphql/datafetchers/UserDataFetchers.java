@@ -36,9 +36,11 @@ public class UserDataFetchers {
 
     public DataFetcher getCreateUserDataFetcher() {
         return environment -> {
+            log.info("====> getCreateUserDataFetcher");
             final var arguments = environment.getArguments();
             final var inputMap = (Map<String, Object>) arguments.get("userInput");
             final var userInput = UserInput.fromMap(inputMap);
+            log.info(String.format("====> userInput: %s", userInput));
 
             final var usersByEmail = userRepository.findByEmail(userInput.getEmail());
             if (usersByEmail.size() == 0) {
