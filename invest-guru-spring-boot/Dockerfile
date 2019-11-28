@@ -1,4 +1,4 @@
-FROM openjdk:13-jdk-slim-buster
+FROM openjdk:11-jdk-slim-buster
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency
 COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib

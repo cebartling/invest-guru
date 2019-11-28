@@ -1,0 +1,22 @@
+type Query {
+  userAccountByEmail(email: String!): UserAccount
+}
+
+type Mutation {
+  createUserAccount(userAccountInput: UserAccountInput!): UserAccount
+}
+
+type UserAccount {
+  id: ID!
+  givenName: String!
+  familyName: String!
+  locale: String!
+  email: String!
+}
+
+input UserAccountInput {
+  givenName: String!
+  familyName: String!
+  locale: String!
+  email: String!
+}

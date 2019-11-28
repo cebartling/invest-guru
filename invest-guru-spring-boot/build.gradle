@@ -1,12 +1,22 @@
 plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
     id 'org.springframework.boot' version '2.2.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id 'java'
+    id "org.liquibase.gradle" version "2.0.1"
+    id "com.palantir.docker" version "0.22.1"
 }
 
 group = 'com.pintailconsultingllc'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
+
+
+springBoot {
+    mainClassName = 'com.pintailconsultingllc.investguru.MainApplication'
+}
 
 configurations {
     developmentOnly
@@ -41,8 +51,47 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
+
+    implementation 'com.graphql-java:graphql-java:13.0'
+    compile 'com.graphql-java:graphql-java-extended-scalars:1.0.1'
+    implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0'
+    implementation 'com.google.guava:guava:28.1-jre'
+
+    implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'org.springframework.security:spring-security-config'
 }
 
 test {
     useJUnitPlatform()
+    minHeapSize = "512m"
+    maxHeapSize = '1G'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("  ==> Running test: ${descriptor}")
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = true
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("  ==> Test: ${descriptor} produced standard out/err: ${event.message}")
+    }
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/investguru"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+    dockerfile file('Dockerfile')
+    pull true
+    noCache true
 }
