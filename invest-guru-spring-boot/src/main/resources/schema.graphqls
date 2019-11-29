@@ -11,12 +11,23 @@ enum StockTransactionTypeEnum {
 
 type Query {
   userByEmail(email: String!): User
-  stockByTickerSymbol(tickerSymbol: String!): Stock
 }
 
 type Mutation {
   createUser(userInput: UserInput!): User
   createStock(stockInput: StockInput!): Stock
+  createUserStock(userStockInput: UserStockInput!): UserStock
+  createUserStockTransaction(userStockTransactionInput: UserStockTransactionInput!): UserStockTransaction
+
+  updateUser(userInput: UserInput!): User
+  updateStock(stockInput: StockInput!): Stock
+  updateUserStock(userStockInput: UserStockInput!): UserStock
+  updateUserStockTransaction(userStockTransactionInput: UserStockTransactionInput!): UserStockTransaction
+
+  deleteUser(id: ID!): Boolean
+  deleteStock(id: ID!): Boolean
+  deleteUserStock(id: ID!): Boolean
+  deleteUserStockTransaction(id: ID!): Boolean
 }
 
 type User {

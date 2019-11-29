@@ -23,15 +23,24 @@ public class GraphQLRuntimeConfiguration {
     @Bean
     public RuntimeWiring.Builder runtimeWiringBuilder() {
         final var builder = RuntimeWiring.newRuntimeWiring();
+        registerScalars(builder);
+        registerTypes(builder);
+        return builder;
+    }
+
+    private void registerTypes(RuntimeWiring.Builder builder) {
+        builder.type(buildQueryTypeWiring());
+        builder.type(buildMutationTypeWiring());
+//        builder.type(buildUserAccountTypeWiring());
+    }
+
+    private void registerScalars(RuntimeWiring.Builder builder) {
         builder.scalar(ExtendedScalars.DateTime);
         builder.scalar(ExtendedScalars.PositiveInt);
         builder.scalar(ExtendedScalars.Locale);
         builder.scalar(ExtendedScalars.Url);
-        builder.type(buildQueryTypeWiring());
-        builder.type(buildMutationTypeWiring());
-//        builder.type(buildUserAccountTypeWiring());
-        return builder;
     }
+
 
     private TypeRuntimeWiring.Builder buildMutationTypeWiring() {
         final var builder = newTypeWiring("Mutation");
