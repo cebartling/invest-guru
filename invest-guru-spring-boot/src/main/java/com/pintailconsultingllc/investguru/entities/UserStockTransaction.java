@@ -37,7 +37,7 @@ public class UserStockTransaction {
     private LocalDateTime transactionDateTime;
 
     @NotNull
-    private Integer PerSharePriceInCents;
+    private Integer perSharePriceInCents;
 
     @NotNull
     private StockTransactionType stockTransactionType;

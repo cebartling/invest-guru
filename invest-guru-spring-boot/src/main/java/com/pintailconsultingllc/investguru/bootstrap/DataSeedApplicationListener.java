@@ -1,7 +1,6 @@
 package com.pintailconsultingllc.investguru.bootstrap;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,13 +12,13 @@ public class DataSeedApplicationListener implements ApplicationListener<ContextR
     private final UsersDataSeed usersDataSeed;
     private final StocksDataSeed stocksDataSeed;
     private final UserStocksDataSeed userStocksDataSeed;
+    private final UserStockTransactionsDataSeed userStockTransactionsDataSeed;
 
-
-    @Autowired
-    public DataSeedApplicationListener(UsersDataSeed usersDataSeed, StocksDataSeed stocksDataSeed, UserStocksDataSeed userStocksDataSeed) {
+    public DataSeedApplicationListener(UsersDataSeed usersDataSeed, StocksDataSeed stocksDataSeed, UserStocksDataSeed userStocksDataSeed, UserStockTransactionsDataSeed userStockTransactionsDataSeed) {
         this.usersDataSeed = usersDataSeed;
         this.stocksDataSeed = stocksDataSeed;
         this.userStocksDataSeed = userStocksDataSeed;
+        this.userStockTransactionsDataSeed = userStockTransactionsDataSeed;
     }
 
     @Override
@@ -29,6 +28,7 @@ public class DataSeedApplicationListener implements ApplicationListener<ContextR
         usersDataSeed.seed(context);
         stocksDataSeed.seed(context);
         userStocksDataSeed.seed(context);
+        userStockTransactionsDataSeed.seed(context);
         log.info("===> END: Data seeding");
     }
 }

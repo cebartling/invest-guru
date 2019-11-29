@@ -1,0 +1,10 @@
+email,tickerSymbol,transactionDateTime,sharesInvolvedInTransaction,perSharePriceInCents,stockTransactionType
+james.smith@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+james.jones@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+james.johnson@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+jennifer.smith@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+jennifer.jones@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+jennifer.johnson@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+maxwell.klobuchar@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+maxwell.barnes@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE
+maxwell.johnson@example.com,MSFT,2019-11-27T16:15:12.000Z,5,15198,PURCHASE

@@ -1,9 +1,9 @@
 package com.pintailconsultingllc.investguru.entities;
 
 public enum StockTransactionType {
-    PURCHASE("purchase"),
-    SALE("sale"),
-    DIVIDEND("dividend");
+    PURCHASE("PURCHASE"),
+    SALE("SALE"),
+    DIVIDEND("DIVIDEND");
 
 
     private final String code;
