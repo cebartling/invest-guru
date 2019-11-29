@@ -157,3 +157,70 @@ databaseChangeLog:
             constraintName: fk_users_stocks_stocks
         - dropTable:
             tableName: users_stocks
+
+  - changeSet:
+      id: 20191128195110
+      author: cebartling
+      changes:
+        - createTable:
+            tableName: user_stock_transactions
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_stock_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shares_involved_in_transaction
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: per_share_price_in_cents
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock_transaction_type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transaction_date_time
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueDate: now()
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: user_stock_id
+            baseTableName: user_stock_transactions
+            constraintName: fk_user_stock_transactions_users_stocks
+            referencedColumnNames: id
+            referencedTableName: users_stocks
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            validate: true
+      rollback:
+        - dropForeignKeyConstraint:
+            constraintName: fk_user_stock_transactions_users_stocks
+        - dropTable:
+            tableName: user_stock_transactions

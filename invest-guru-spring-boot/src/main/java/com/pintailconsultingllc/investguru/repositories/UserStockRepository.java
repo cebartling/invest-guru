@@ -5,7 +5,9 @@ import com.pintailconsultingllc.investguru.entities.User;
 import com.pintailconsultingllc.investguru.entities.UserStock;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserStockRepository extends CrudRepository<UserStock, String> {
+import java.util.UUID;
+
+public interface UserStockRepository extends CrudRepository<UserStock, UUID> {
 
     UserStock findByUserAndStock(User user, Stock stock);
 }

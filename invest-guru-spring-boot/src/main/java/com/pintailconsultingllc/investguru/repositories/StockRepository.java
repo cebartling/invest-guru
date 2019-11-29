@@ -3,7 +3,9 @@ package com.pintailconsultingllc.investguru.repositories;
 import com.pintailconsultingllc.investguru.entities.Stock;
 import org.springframework.data.repository.CrudRepository;
 
-public interface StockRepository extends CrudRepository<Stock, String> {
+import java.util.UUID;
+
+public interface StockRepository extends CrudRepository<Stock, UUID> {
 
     /**
      * Retrieve a list of user accounts tied to an email address.

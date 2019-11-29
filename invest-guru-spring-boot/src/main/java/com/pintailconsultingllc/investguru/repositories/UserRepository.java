@@ -3,7 +3,9 @@ package com.pintailconsultingllc.investguru.repositories;
 import com.pintailconsultingllc.investguru.entities.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, String> {
+import java.util.UUID;
+
+public interface UserRepository extends CrudRepository<User, UUID> {
 
     /**
      * Retrieve a list of user accounts tied to an email address.

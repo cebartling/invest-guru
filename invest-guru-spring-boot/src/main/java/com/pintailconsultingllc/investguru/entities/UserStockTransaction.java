@@ -12,12 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "users_stocks")
-public class UserStock {
+@Table(name = "user_stock_transactions")
+public class UserStockTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,12 +26,19 @@ public class UserStock {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_stock_id")
     @NotNull
-    private User user;
+    private UserStock userStock;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id")
     @NotNull
-    private Stock stock;
+    private Integer sharesInvolvedInTransaction;
+
+    @NotNull
+    private LocalDateTime transactionDateTime;
+
+    @NotNull
+    private Integer PerSharePriceInCents;
+
+    @NotNull
+    private StockTransactionType stockTransactionType;
 }
