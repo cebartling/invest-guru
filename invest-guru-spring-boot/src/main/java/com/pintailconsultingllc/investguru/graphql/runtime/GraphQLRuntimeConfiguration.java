@@ -1,6 +1,7 @@
 package com.pintailconsultingllc.investguru.graphql.runtime;
 
 import com.pintailconsultingllc.investguru.graphql.datafetchers.UserDataFetchers;
+import graphql.scalars.ExtendedScalars;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeRuntimeWiring;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class GraphQLRuntimeConfiguration {
     @Bean
     public RuntimeWiring.Builder runtimeWiringBuilder() {
         final var builder = RuntimeWiring.newRuntimeWiring();
+        builder.scalar(ExtendedScalars.DateTime);
+        builder.scalar(ExtendedScalars.PositiveInt);
+        builder.scalar(ExtendedScalars.Locale);
+        builder.scalar(ExtendedScalars.Url);
         builder.type(buildQueryTypeWiring());
         builder.type(buildMutationTypeWiring());
 //        builder.type(buildUserAccountTypeWiring());

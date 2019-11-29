@@ -40,7 +40,6 @@ public class GraphQLProvider {
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
-        log.info("===> Initialized the GraphQL system!");
     }
 
     private GraphQLSchema buildSchema(String sdl) {

@@ -1,22 +1,89 @@
+scalar DateTime
+scalar PositiveInt
+scalar Locale
+scalar Url
+
+enum StockTransactionTypeEnum {
+  PURCHASE
+  SALE
+  DIVIDEND
+}
+
 type Query {
   userByEmail(email: String!): User
+  stockByTickerSymbol(tickerSymbol: String!): Stock
 }
 
 type Mutation {
   createUser(userInput: UserInput!): User
+  createStock(stockInput: StockInput!): Stock
 }
 
 type User {
   id: ID!
   givenName: String!
   familyName: String!
-  locale: String!
+  locale: Locale!
   email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userStocks: [UserStock!]!
+}
+
+type Stock {
+  id: ID!
+  tickerSymbol: String!
+  companyName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserStock {
+  id: ID!
+  user: User!
+  stock: Stock!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactions: [UserStockTransaction!]!
+}
+
+type UserStockTransaction {
+  id: ID!
+  userStock: UserStock!
+  sharesInvolvedInTransaction: PositiveInt!
+  transactionDateTime: DateTime!
+  perSharePriceInCents: PositiveInt!
+  stockTransactionType: StockTransactionTypeEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input UserInput {
+  id: ID
   givenName: String!
   familyName: String!
   locale: String!
   email: String!
 }
+
+input StockInput {
+  id: ID
+  tickerSymbol: String!
+  companyName: String!
+}
+
+input UserStockInput {
+  id: ID
+  userId: ID!
+  stockId: ID!
+}
+
+input UserStockTransactionInput {
+  id: ID
+  userStockId: ID!
+  sharesInvolvedInTransaction: PositiveInt!
+  transactionDateTime: DateTime!
+  perSharePriceInCents: PositiveInt!
+  stockTransactionType: StockTransactionTypeEnum!
+}
+

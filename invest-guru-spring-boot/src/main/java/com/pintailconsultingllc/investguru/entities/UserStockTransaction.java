@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -34,7 +34,7 @@ public class UserStockTransaction {
     private Integer sharesInvolvedInTransaction;
 
     @NotNull
-    private LocalDateTime transactionDateTime;
+    private OffsetDateTime transactionDateTime;
 
     @NotNull
     private Integer perSharePriceInCents;

@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -59,7 +59,7 @@ public class UserStockTransactionsDataSeed implements DataSeed {
                 final Stock stock = stockRepository.findByTickerSymbol(tickerSymbol);
                 final var userStock = userStockRepository.findByUserAndStock(user, stock);
                 if (userStock != null) {
-                    final var transactionTimestamp = LocalDateTime.parse(values.get("transactionDateTime"), formatter);
+                    final var transactionTimestamp = OffsetDateTime.parse(values.get("transactionDateTime"), formatter);
                     final var transactions = userStockTransactionRepository.findByUserStockAndTransactionDateTime(
                             userStock, transactionTimestamp);
                     if (transactions.size() == 0) {
