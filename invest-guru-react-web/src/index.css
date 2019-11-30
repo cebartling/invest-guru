@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.view-enter {
+  opacity: 0.01;
+}
+
+.view-enter.view-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.view-leave {
+  opacity: 1;
+}
+
+.view-leave.view-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
