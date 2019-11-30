@@ -3,20 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { ApolloProvider } from '@apollo/client';
-
-const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: new HttpLink({
-        uri: 'https://48p1r2roz4.sse.codesandbox.io',
-    })
-});
+// import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+// import { ApolloProvider } from '@apollo/client';
+//
+// const client = new ApolloClient({
+//     cache: new InMemoryCache(),
+//     link: new HttpLink({
+//         uri: 'https://48p1r2roz4.sse.codesandbox.io',
+//     })
+// });
 
 const ApolloApp = () => (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
         <App/>
-    </ApolloProvider>
+    // </ApolloProvider>
 );
 
 ReactDOM.render(<ApolloApp />, document.getElementById('root'));
