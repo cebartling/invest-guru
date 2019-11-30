@@ -1,10 +1,10 @@
 package com.pintailconsultingllc.investguru.graphql.runtime;
 
 import com.pintailconsultingllc.investguru.graphql.datafetchers.UserDataFetchers;
+import com.pintailconsultingllc.investguru.graphql.datafetchers.UserStockDataFetchers;
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeRuntimeWiring;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,10 +14,11 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 public class GraphQLRuntimeConfiguration {
 
     private final UserDataFetchers userDataFetchers;
+    private final UserStockDataFetchers userStockDataFetchers;
 
-    @Autowired
-    public GraphQLRuntimeConfiguration(UserDataFetchers userDataFetchers) {
+    public GraphQLRuntimeConfiguration(UserDataFetchers userDataFetchers, UserStockDataFetchers userStockDataFetchers) {
         this.userDataFetchers = userDataFetchers;
+        this.userStockDataFetchers = userStockDataFetchers;
     }
 
     @Bean
@@ -32,6 +33,7 @@ public class GraphQLRuntimeConfiguration {
         builder.type(buildQueryTypeWiring());
         builder.type(buildMutationTypeWiring());
         builder.type(buildUserTypeWiring());
+        builder.type(buildUserStockTypeWiring());
     }
 
     private void registerScalars(RuntimeWiring.Builder builder) {
@@ -57,6 +59,12 @@ public class GraphQLRuntimeConfiguration {
     private TypeRuntimeWiring.Builder buildUserTypeWiring() {
         final var typeWiring = newTypeWiring("User");
         typeWiring.dataFetcher("stocks", userDataFetchers.getStocksDataFetcher());
+        return typeWiring;
+    }
+
+    private TypeRuntimeWiring.Builder buildUserStockTypeWiring() {
+        final var typeWiring = newTypeWiring("UserStock");
+        typeWiring.dataFetcher("transactions", userStockDataFetchers.getTransactionsDataFetcher());
         return typeWiring;
     }
 }
