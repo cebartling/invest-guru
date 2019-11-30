@@ -12,7 +12,8 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "redux": "^4.0.4"
+    "redux": "^4.0.4",
+    "tailwindcss": "^1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
