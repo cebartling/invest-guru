@@ -32,7 +32,6 @@ public class UserDataFetchers {
 
     public DataFetcher getCreateUserDataFetcher() {
         return environment -> {
-            log.info("====> getCreateUserDataFetcher");
             final var arguments = environment.getArguments();
             final var inputMap = (Map<String, Object>) arguments.get("userInput");
             final var userInput = UserInput.fromMap(inputMap);
@@ -49,6 +48,13 @@ public class UserDataFetchers {
             } else {
                 return user;
             }
+        };
+    }
+
+    public DataFetcher getStocksDataFetcher() {
+        return environment -> {
+            final var user = (User) environment.getSource();
+            return user.getStocks();
         };
     }
 }

@@ -38,7 +38,7 @@ type User {
   email: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  userStocks: [UserStock!]!
+  stocks: [UserStock!]!
 }
 
 type Stock {

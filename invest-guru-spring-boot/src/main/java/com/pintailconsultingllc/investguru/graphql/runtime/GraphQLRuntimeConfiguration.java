@@ -31,7 +31,7 @@ public class GraphQLRuntimeConfiguration {
     private void registerTypes(RuntimeWiring.Builder builder) {
         builder.type(buildQueryTypeWiring());
         builder.type(buildMutationTypeWiring());
-//        builder.type(buildUserAccountTypeWiring());
+        builder.type(buildUserTypeWiring());
     }
 
     private void registerScalars(RuntimeWiring.Builder builder) {
@@ -54,11 +54,9 @@ public class GraphQLRuntimeConfiguration {
         return builder;
     }
 
-//    private TypeRuntimeWiring.Builder buildUserAccountTypeWiring() {
-//        final var typeWiring = newTypeWiring("UserAccount");
-//        typeWiring.dataFetcher("permissions", userAccountDataFetchers.getPermissionsDataFetcher());
-//        newTypeWiring("Book")
-//                        .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher())
-//        return typeWiring;
-//    }
+    private TypeRuntimeWiring.Builder buildUserTypeWiring() {
+        final var typeWiring = newTypeWiring("User");
+        typeWiring.dataFetcher("stocks", userDataFetchers.getStocksDataFetcher());
+        return typeWiring;
+    }
 }
