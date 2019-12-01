@@ -11,8 +11,13 @@ const AppRouter = () => {
     return (
         <CSSTransitionGroup
             transitionName="view"
+            transitionAppear={false}
+            transitionEnter={true}
+            transitionLeave={false}
+            transitionAppearTimeout={500}
             transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
+            transitionLeaveTimeout={300}
+        >
             <Switch key={location.key} location={location}>
                 <Route path="/dashboard">
                     <DashboardView/>

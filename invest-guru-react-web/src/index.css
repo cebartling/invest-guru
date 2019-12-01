@@ -29,3 +29,12 @@ code {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+
+.view-appear {
+  opacity: 0.01;
+}
+
+.view-appear.view-appear-active {
+  opacity: 1;
+  transition: opacity .75s ease-in;
+}
