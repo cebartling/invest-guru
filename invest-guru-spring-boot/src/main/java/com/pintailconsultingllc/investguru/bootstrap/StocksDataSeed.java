@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
+import java.time.OffsetDateTime;
 
 @Component
 @Slf4j
@@ -37,6 +38,8 @@ public class StocksDataSeed implements DataSeed {
                     final var stock = new Stock();
                     stock.setTickerSymbol(values.get("tickerSymbol"));
                     stock.setCompanyName(values.get("companyName"));
+                    stock.setCreatedAt(OffsetDateTime.now());
+                    stock.setUpdatedAt(OffsetDateTime.now());
                     stockRepository.save(stock);
                     log.info(String.format("Inserted stock: %s", stock));
                 }

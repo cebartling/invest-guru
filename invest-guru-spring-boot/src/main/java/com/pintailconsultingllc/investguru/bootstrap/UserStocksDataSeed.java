@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
+import java.time.OffsetDateTime;
 
 @Component
 @Slf4j
@@ -53,6 +54,8 @@ public class UserStocksDataSeed implements DataSeed {
                     final UserStock userStock = new UserStock();
                     userStock.setUser(user);
                     userStock.setStock(stock);
+                    userStock.setCreatedAt(OffsetDateTime.now());
+                    userStock.setUpdatedAt(OffsetDateTime.now());
                     userStockRepository.save(userStock);
                 }
                 values = csvReaderHeaderAware.readMap();

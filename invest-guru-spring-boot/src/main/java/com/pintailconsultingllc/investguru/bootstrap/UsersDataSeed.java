@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
+import java.time.OffsetDateTime;
 
 @Component
 @Slf4j
@@ -39,6 +40,8 @@ public class UsersDataSeed implements DataSeed {
                     user.setFamilyName(values.get("familyName"));
                     user.setGivenName(values.get("givenName"));
                     user.setLocale(values.get("locale"));
+                    user.setCreatedAt(OffsetDateTime.now());
+                    user.setUpdatedAt(OffsetDateTime.now());
                     userRepository.save(user);
                     log.info(String.format("Inserted user: %s", user));
                 }

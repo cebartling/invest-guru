@@ -1,9 +1,7 @@
 package com.pintailconsultingllc.investguru.entities;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,12 +39,8 @@ public class UserStockTransaction {
     @NotNull
     private Integer perSharePriceInCents;
 
-    @NotNull
-    @CreationTimestamp
     private OffsetDateTime createdAt;
 
-    @NotNull
-    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
     @NotNull

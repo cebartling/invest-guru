@@ -70,6 +70,8 @@ public class UserStockTransactionsDataSeed implements DataSeed {
                         transaction.setTransactionDateTime(transactionTimestamp);
                         final var stockTransactionType = StockTransactionType.valueOf(values.get("stockTransactionType"));
                         transaction.setStockTransactionType(stockTransactionType);
+                        transaction.setCreatedAt(OffsetDateTime.now());
+                        transaction.setUpdatedAt(OffsetDateTime.now());
                         userStockTransactionRepository.save(transaction);
                     }
                 }

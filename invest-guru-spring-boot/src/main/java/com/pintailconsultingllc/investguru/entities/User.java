@@ -1,9 +1,7 @@
 package com.pintailconsultingllc.investguru.entities;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,12 +37,8 @@ public class User {
     @NotNull
     private String email;
 
-    @NotNull
-    @CreationTimestamp
     private OffsetDateTime createdAt;
 
-    @NotNull
-    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
     @OneToMany(mappedBy = "user")
