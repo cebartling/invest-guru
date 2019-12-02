@@ -14,7 +14,7 @@ function App() {
 
   return (
       <Router>
-        <div>
+        <div className="flex flex-col w-3/4 mx-auto my-12 items-center">
           <nav>
             <header>
               <NavBar />
