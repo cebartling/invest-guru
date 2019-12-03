@@ -4,6 +4,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import AppRouter from "./AppRouter";
 import NavBar from "./components/NavBar";
 import {useAuth0} from "./react-auth0-spa";
+import Footer from "./components/Footer";
 
 function App() {
     const {loading} = useAuth0();
@@ -14,10 +15,11 @@ function App() {
 
     return (
         <Router>
-            <div className="flex flex-col w-3/4 mx-auto my-12 items-center">
-                <NavBar/>
-                <AppRouter className="top-margin" />
-            </div>
+            <NavBar/>
+            <main role="main" className="container-fluid top-margin">
+                <AppRouter/>
+            </main>
+            <Footer/>
         </Router>
     );
 }
