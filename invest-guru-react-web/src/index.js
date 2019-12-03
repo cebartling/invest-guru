@@ -6,6 +6,21 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Auth0Provider} from "./react-auth0-spa";
 import history from "./utils/history";
+import {createStore, applyMiddleware} from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import {helloSaga} from './sagas';
+import {Provider} from 'react-redux';
+import rootReducer from "./reducers";
+
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+    rootReducer,
+    applyMiddleware(sagaMiddleware)
+);
+sagaMiddleware.run(helloSaga);
+
+const action = type => store.dispatch({type});
+
 
 // import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 // import { ApolloProvider } from '@apollo/client';
@@ -34,7 +49,9 @@ const WrappedApp = () => (
         redirect_uri={window.location.origin}
         onRedirectCallback={onRedirectCallback}>
         {/*<ApolloProvider client={client}>*/}
-        <App/>
+        <Provider store={store}>
+            <App/>
+        </Provider>
         {/*</ApolloProvider>*/}
     </Auth0Provider>
 );
