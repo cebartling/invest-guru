@@ -5,6 +5,7 @@ import DashboardView from "./views/DashboardView";
 import {CSSTransitionGroup} from "react-transition-group";
 import {useLocation} from "react-router";
 import ProfileView from "./views/ProfileView";
+import SignOutView from "./views/SignOutView";
 
 const AppRouter = () => {
     const location = useLocation();
@@ -25,6 +26,9 @@ const AppRouter = () => {
                 </Route>
                 <Route path="/profile">
                     <ProfileView/>
+                </Route>
+                <Route path="/signOut">
+                    <SignOutView/>
                 </Route>
                 <Route path="/">
                     <FrontDoorView/>
