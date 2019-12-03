@@ -3,7 +3,7 @@ import {useAuth0} from "../react-auth0-spa";
 import {Link} from "react-router-dom";
 
 const NavBar = () => {
-    const {isAuthenticated} = useAuth0();
+    const {isAuthenticated, logout, loginWithRedirect} = useAuth0();
 
     return (
         <header>
@@ -14,26 +14,28 @@ const NavBar = () => {
                     <span className="navbar-toggler-icon"/>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
-                    {isAuthenticated && (
-                        <ul className="navbar-nav mr-auto">
+                    <ul className="navbar-nav mr-auto">
+                        {isAuthenticated && (
                             <li className="nav-item">
                                 <Link to="/dashboard" className="nav-link">Dashboard</Link>
                             </li>
+                        )}
+                        {isAuthenticated && (
                             <li className="nav-item">
                                 <Link to="/profile" className="nav-link">Profile</Link>
                             </li>
+                        )}
+                        {isAuthenticated && (
                             <li className="nav-item">
-                                <Link to="/signOut" className="nav-link">Sign out</Link>
+                                <Link to={{hash: ''}} className="nav-link" onClick={() => logout()}>Sign out</Link>
                             </li>
-                        </ul>
-                    )}
-                    {/*{!isAuthenticated && (*/}
-                    {/*    <ul className="navbar-nav mr-auto">*/}
-                    {/*        <li className="nav-item">*/}
-                    {/*            <Link to="/signOut" className="nav-link">Sign out</Link>*/}
-                    {/*        </li>*/}
-                    {/*    </ul>*/}
-                    {/*)}*/}
+                        )}
+                        {!isAuthenticated && (
+                            <li className="nav-item">
+                                <Link to={{hash: ''}} className="nav-link" onClick={() => loginWithRedirect({})}>Sign in</Link>
+                            </li>
+                        )}
+                    </ul>
                 </div>
             </nav>
         </header>

@@ -18,17 +18,13 @@ const AppRouter = () => {
             transitionLeave={false}
             transitionAppearTimeout={500}
             transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}
-        >
+            transitionLeaveTimeout={300}>
             <Switch key={location.key} location={location}>
                 <Route path="/dashboard">
                     <DashboardView/>
                 </Route>
                 <Route path="/profile">
                     <ProfileView/>
-                </Route>
-                <Route path="/signOut">
-                    <SignOutView/>
                 </Route>
                 <Route path="/">
                     <FrontDoorView/>
