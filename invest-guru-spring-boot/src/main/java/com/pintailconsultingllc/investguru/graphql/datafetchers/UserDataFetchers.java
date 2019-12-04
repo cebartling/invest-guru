@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Component
@@ -44,6 +45,8 @@ public class UserDataFetchers {
                 unpersisted.setFamilyName(userInput.getFamilyName());
                 unpersisted.setGivenName(userInput.getGivenName());
                 unpersisted.setLocale(userInput.getLocale());
+                unpersisted.setCreatedAt(OffsetDateTime.now());
+                unpersisted.setUpdatedAt(OffsetDateTime.now());
                 return this.userRepository.save(unpersisted);
             } else {
                 return user;
