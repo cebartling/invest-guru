@@ -1,6 +1,7 @@
 import React from "react";
 import {useAuth0} from "../react-auth0-spa";
 import {Link} from "react-router-dom";
+import ProfilePicture from "./ProfilePicture";
 
 const NavBar = () => {
     const {isAuthenticated, logout, loginWithRedirect} = useAuth0();
@@ -35,6 +36,11 @@ const NavBar = () => {
                                 <Link to={{hash: ''}} className="nav-link" onClick={() => loginWithRedirect({})}>Sign in</Link>
                             </li>
                         )}
+                    </ul>
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <ProfilePicture/>
+                        </li>
                     </ul>
                 </div>
             </nav>
