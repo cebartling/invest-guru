@@ -34,6 +34,7 @@ public class GraphQLProvider {
         return graphQL;
     }
 
+
     @PostConstruct
     public void init() throws IOException {
         URL url = Resources.getResource("schema.graphqls");
