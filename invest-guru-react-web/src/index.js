@@ -6,23 +6,23 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Auth0Provider} from "./react-auth0-spa";
 import history from "./utils/history";
-import {createStore, applyMiddleware} from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import {helloSaga} from './sagas';
+import {createStore} from 'redux';
+// import createSagaMiddleware from 'redux-saga';
 import {Provider} from 'react-redux';
-import rootReducer from "./reducers";
 import {ApolloClient, HttpLink, InMemoryCache} from '@apollo/client';
 import {ApolloProvider} from '@apollo/client';
+// import rootSaga from "./redux/sagas";
+import rootReducer from "./redux/reducers";
 
 
-const sagaMiddleware = createSagaMiddleware();
+// const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    applyMiddleware(sagaMiddleware)
+//     applyMiddleware(sagaMiddleware),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
-sagaMiddleware.run(helloSaga);
-
-const action = type => store.dispatch({type});
+// sagaMiddleware.run(rootSaga);
+// const action = type => store.dispatch({type});
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),

@@ -6,6 +6,14 @@ import ProfilePicture from "./ProfilePicture";
 const NavBar = () => {
     const {isAuthenticated, logout, loginWithRedirect} = useAuth0();
 
+    const doSignOut = () => {
+        logout();
+    };
+
+    const doSignIn = () => {
+        loginWithRedirect({});
+    };
+
     return (
         <header>
             <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -28,12 +36,13 @@ const NavBar = () => {
                         )}
                         {isAuthenticated && (
                             <li className="nav-item">
-                                <Link to={{hash: ''}} className="nav-link" onClick={() => logout()}>Sign out</Link>
+                                <Link to={{hash: ''}} className="nav-link" onClick={doSignOut}>Sign out</Link>
                             </li>
                         )}
                         {!isAuthenticated && (
                             <li className="nav-item">
-                                <Link to={{hash: ''}} className="nav-link" onClick={() => loginWithRedirect({})}>Sign in</Link>
+                                <Link to={{hash: ''}} className="nav-link" onClick={doSignIn}>Sign
+                                    in</Link>
                             </li>
                         )}
                     </ul>

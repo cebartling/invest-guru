@@ -1,10 +1,13 @@
 import React from 'react';
 import {useQuery} from "@apollo/client";
 import UserByEmailQuery from "../graphql/queries/UserByEmailQuery";
+import {useSelector} from "react-redux";
+import {userEmailSelector} from "../redux/selectors";
 
 const DashboardView = () => {
+    const email = useSelector(userEmailSelector);
     const {loading, error, data} = useQuery(UserByEmailQuery, {
-        variables: { email: 'maxwell.johnson@example.com' }
+        variables: { email }
     });
 
     if (loading) return <p>Loading...</p>;
