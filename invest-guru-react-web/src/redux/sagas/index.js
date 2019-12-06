@@ -1,3 +1,4 @@
+import {all} from 'redux-saga/effects';
 // import {all, call, put, takeEvery} from 'redux-saga/effects';
 // import {LOAD_TODO_LIST, RENDER_TODO_LIST} from '../actions';
 // import {createSetTokenAction, createSetUserAction, SIGN_IN} from "../actions";
@@ -44,11 +45,11 @@
 // }
 
 
-// export default function* rootSaga() {
-//     yield all([
+export default function* rootSaga() {
+    yield all([
 //         helloSaga(),
 //         loadToDoList(),
 //         watchIncrementAsync()
         // watchSignInAsync()
-    // ]);
-// }
+    ]);
+}

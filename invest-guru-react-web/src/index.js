@@ -6,22 +6,22 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Auth0Provider} from "./react-auth0-spa";
 import history from "./utils/history";
-import {createStore} from 'redux';
-// import createSagaMiddleware from 'redux-saga';
+import {applyMiddleware, compose, createStore} from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import {Provider} from 'react-redux';
 import {ApolloClient, HttpLink, InMemoryCache} from '@apollo/client';
 import {ApolloProvider} from '@apollo/client';
-// import rootSaga from "./redux/sagas";
+import rootSaga from "./redux/sagas";
 import rootReducer from "./redux/reducers";
 
 
-// const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     rootReducer,
-//     applyMiddleware(sagaMiddleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    composeEnhancers(applyMiddleware(sagaMiddleware))
 );
-// sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga);
 // const action = type => store.dispatch({type});
 
 const client = new ApolloClient({
@@ -31,8 +31,7 @@ const client = new ApolloClient({
     })
 });
 
-// A function that routes the user to the right place
-// after login
+// A function that routes the user to the right place after login
 const onRedirectCallback = appState => {
     history.push(
         appState && appState.targetUrl
