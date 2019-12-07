@@ -2,16 +2,19 @@ import React from "react";
 import {useAuth0} from "../react-auth0-spa";
 import {Link} from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
+import {useDispatch} from "react-redux";
+import {createActionSignIn, createActionSignOut} from "../redux/actions";
 
 const NavBar = () => {
-    const {isAuthenticated, logout, loginWithRedirect} = useAuth0();
+    const {isAuthenticated} = useAuth0();
+    const dispatch = useDispatch();
 
     const doSignOut = () => {
-        logout();
+        dispatch(createActionSignOut());
     };
 
     const doSignIn = () => {
-        loginWithRedirect({});
+        dispatch(createActionSignIn());
     };
 
     return (

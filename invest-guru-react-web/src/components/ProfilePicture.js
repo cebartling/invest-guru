@@ -15,7 +15,11 @@ const ProfilePicture = () => {
         <CSSTransitionGroup
             transitionName="view"
             transitionAppear={true}
-            transitionAppearTimeout={1250}>
+            transitionAppearTimeout={1250}
+            transitionEnter={true}
+            transitionEnterTimeout={0}
+            transitionLeave={false}
+            transitionLeaveTimeout={0}>
             <img className="profile-picture" src={user.picture} alt="Profile"/>
         </CSSTransitionGroup>
     );

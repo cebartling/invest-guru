@@ -1,34 +1,21 @@
-// export const ADD_TODO = 'ADD_TODO';
-export const SIGN_IN = 'SIGN_IN';
-export const SET_USER = 'SET_USER';
-export const SET_TOKEN = 'SET_TOKEN';
+import {SET_TOKEN, createActionSetToken} from "./auth/setToken";
+import {SET_USER, createActionSetUser} from "./auth/setUser";
+import {SIGN_IN, createActionSignIn} from "./auth/signIn";
+import {SIGN_OUT, createActionSignOut} from "./auth/signOut";
+import {SET_AUTHENTICATED, createActionSetAuthenticated} from "./auth/setAuthenticated";
 
-// export function addToDo(title) {
-//     return {
-//         type: ADD_TODO,
-//         toDoItem: {
-//             _id: (new Date().getTime()).toString(),
-//             title
-//         }
-//     };
-// };
+export {
+    SET_AUTHENTICATED,
+    SET_TOKEN,
+    SET_USER,
+    SIGN_IN,
+    SIGN_OUT
+};
 
-export const createSignInAction = () => {
-    return {
-        type: SIGN_IN
-    };
-}
-
-export const createSetUserAction = (user) => {
-    return {
-        type: SET_USER,
-        payload: user
-    };
-}
-
-export const createSetTokenAction = (token) => {
-    return {
-        type: SET_TOKEN,
-        payload: token
-    };
-}
+export {
+    createActionSetAuthenticated,
+    createActionSetToken,
+    createActionSetUser,
+    createActionSignIn,
+    createActionSignOut
+};
