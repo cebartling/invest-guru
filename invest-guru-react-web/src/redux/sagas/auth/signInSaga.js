@@ -3,16 +3,11 @@ import {createActionSetAuthenticated, createActionSetToken, createActionSetUser,
 import {getAuth0Client} from "../../../react-auth0-spa";
 
 function* signInAsync() {
-    console.info("Running signInAsync!");
     const auth0Client = yield getAuth0Client();
-    yield auth0Client.loginWithPopup({});
-    const user = yield auth0Client.getUser();
-    const token = yield auth0Client.getTokenSilently({});
-    const isAuthenticated = yield auth0Client.isAuthenticated();
-
-    yield put(createActionSetAuthenticated(isAuthenticated));
-    yield put(createActionSetUser(user));
-    yield put(createActionSetToken(token));
+    yield auth0Client.loginWithPopup({display: 'page'});
+    yield put(createActionSetAuthenticated(yield auth0Client.isAuthenticated()));
+    yield put(createActionSetUser(yield auth0Client.getUser()));
+    yield put(createActionSetToken(yield auth0Client.getTokenSilently({})));
 }
 
 export function* watchSignInAsync() {

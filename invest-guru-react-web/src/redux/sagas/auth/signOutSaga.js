@@ -3,7 +3,6 @@ import {SIGN_OUT, createActionSetUser, createActionSetToken, createActionSetAuth
 import {getAuth0Client} from "../../../react-auth0-spa";
 
 function* signOutAsync() {
-    console.log("Running signOutAsync!");
     const auth0Client = yield getAuth0Client();
     yield auth0Client.logout({});
     const isAuthenticated = yield auth0Client.isAuthenticated();

@@ -1,13 +1,14 @@
 import React from "react";
-import {useAuth0} from "../react-auth0-spa";
 import {CSSTransitionGroup} from "react-transition-group";
 import './ProfilePicture.scss';
+import {useSelector} from "react-redux";
+import {isAuthenticatedSelector, userSelector} from "../redux/selectors";
 
 const ProfilePicture = () => {
+    const isAuthenticated = useSelector(isAuthenticatedSelector);
+    const user = useSelector(userSelector);
 
-    const {loading, user} = useAuth0();
-
-    if (loading || !user) {
+    if (!isAuthenticated) {
         return null;
     }
 
