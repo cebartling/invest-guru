@@ -7,16 +7,10 @@ import * as serviceWorker from './serviceWorker';
 import {Auth0Provider} from "./react-auth0-spa";
 import history from "./utils/history";
 import {Provider} from 'react-redux';
-import {ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from '@apollo/client';
+import {ApolloProvider} from '@apollo/client';
 import store from "./redux/store";
+import client from "./graphql/apolloClient";
 
-
-const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: new HttpLink({
-        uri: process.env.REACT_APP_GRAPHQL_URL,
-    })
-});
 
 // A function that routes the user to the right place after login
 const onRedirectCallback = appState => {
