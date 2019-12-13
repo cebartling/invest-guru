@@ -19,6 +19,9 @@ gem 'puma', '~> 4.1'
 # The ruby implementation of the GraphQL language.
 gem 'graphql'
 
+# Alpha Vantage financial data API client
+gem 'alphavantagerb'
+
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
