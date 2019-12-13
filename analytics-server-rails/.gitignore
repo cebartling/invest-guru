@@ -25,3 +25,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/.idea/.gitignore
+/.idea/analytics-server-rails.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
