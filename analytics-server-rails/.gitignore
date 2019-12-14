@@ -32,3 +32,5 @@
 /.idea/vcs.xml
 /.idea/.generators
 /.idea/.rakeTasks
+
+/config/credentials/development.key
