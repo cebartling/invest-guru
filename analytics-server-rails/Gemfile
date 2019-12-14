@@ -48,3 +48,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "auth0", "~> 4.9"
+
+gem "jwt", "~> 2.2"
