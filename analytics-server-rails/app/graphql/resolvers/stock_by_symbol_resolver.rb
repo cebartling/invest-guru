@@ -3,11 +3,10 @@ module Resolvers
     type Types::StockType, null: true
 
     argument :symbol, String, required: true
-    argument :foobar, String, required: true
 
-    def resolve(arguments)
+    def resolve(symbol:)
       # Rails.application.credentials.alphavantage[:api_key]
-      Stock.find_by_symbol arguments[:symbol]
+      Stock.find_by_symbol symbol
     end
   end
 end

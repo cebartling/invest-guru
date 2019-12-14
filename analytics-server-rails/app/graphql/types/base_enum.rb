@@ -1,4 +1,4 @@
 module Types
-    class BaseEnum < GraphQL::Schema::Enum
-    end
+  class BaseEnum < GraphQL::Schema::Enum
+  end
 end
